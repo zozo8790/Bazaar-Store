@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متجري | أفضل المنتجات المتنوعة</title>
-    <!-- استدعاء خط Cairo من جوجل -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -173,7 +172,7 @@
             padding: 15px 5%;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             position: sticky;
-            top: 70px; /* ليبقى أسفل الهيدر */
+            top: 70px;
             z-index: 90;
         }
         .categories-container {
@@ -181,10 +180,10 @@
             gap: 10px;
             overflow-x: auto;
             padding-bottom: 5px;
-            scrollbar-width: none; /* إخفاء شريط التمرير في فايرفوكس */
+            scrollbar-width: none;
         }
         .categories-container::-webkit-scrollbar {
-            display: none; /* إخفاء شريط التمرير في كروم وسفاري */
+            display: none; 
         }
         .category-btn {
             background-color: #f3f4f6;
@@ -227,7 +226,13 @@
             flex-direction: column;
         }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
+        .product-card img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            cursor: zoom-in; /* تغيير شكل الماوس ليدل على التكبير */
+        }
         .product-title { font-size: 1.3rem; margin: 15px 0 10px; color: #111; }
         .product-price-display { color: var(--primary-color); font-weight: bold; font-size: 1.5rem; margin-bottom: 20px; }
         
@@ -278,9 +283,47 @@
         .btn-whatsapp { background-color: var(--whatsapp-color); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; }
         .btn-whatsapp:hover { background-color: #1ebe57; }
 
+        /* --- عارض الصور (Lightbox Modal) --- */
+        .image-modal {
+            display: none; 
+            position: fixed; 
+            z-index: 2500; 
+            padding-top: 80px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from {transform: scale(0.8); opacity: 0;}
+            to {transform: scale(1); opacity: 1;}
+        }
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-modal:hover { color: #ccc; }
+
         footer { background-color: #1f2937; color: white; text-align: center; padding: 20px; margin-top: 40px; }
 
-        /* --- تحسينات الهواتف --- */
+        /* --- تحسينات الهواتف والتصميم الشبكي --- */
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px; }
             .search-container { width: 100%; max-width: 100%; margin: 5px 0; order: 3; }
@@ -289,7 +332,31 @@
             nav ul { gap: 10px; font-size: 0.9rem; }
             .hero { padding: 60px 15px; }
             .hero h1 { font-size: 2.2rem; }
-            .categories-wrapper { top: 125px; padding: 10px 15px; } /* تعديل موقع الفئات في الهاتف */
+            .categories-wrapper { top: 125px; padding: 10px 15px; } 
+
+            /* --- التعديل الأهم: تحويل المنتجات لشبكة ثنائية في الموبايل --- */
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr); /* عمودين بدلاً من عمود واحد */
+                gap: 12px; /* تقليل المسافة بين الكروت */
+            }
+            .product-card {
+                padding: 12px; /* تقليل الحشوة الداخلية للكارت */
+            }
+            .product-card img {
+                height: 130px; /* تصغير ارتفاع الصورة لتناسب الشاشة */
+            }
+            .product-title {
+                font-size: 1rem; /* تصغير حجم الخط */
+                margin: 10px 0 5px;
+            }
+            .product-price-display {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+            .btn-add-cart {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -297,6 +364,11 @@
 
     <div id="toast" class="toast-notification">
         <span>تمت إضافة المنتج إلى السلة بنجاح 🛒</span>
+    </div>
+
+    <div id="image-modal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal">&times;</span>
+        <img id="expanded-image" class="modal-content">
     </div>
 
     <header>
@@ -320,7 +392,6 @@
         </div>
     </header>
 
-    <!-- شريط الفئات (التصنيفات) -->
     <div class="categories-wrapper">
         <div class="categories-container" id="category-filters">
             <button class="category-btn active" onclick="setCategory('all', this)">الكل</button>
@@ -336,7 +407,6 @@
         </div>
     </div>
 
-    <!-- نافذة السلة -->
     <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
@@ -364,10 +434,8 @@
     <section id="products" class="products-section">
         <h2>أحدث المنتجات</h2>
         
-        <!-- تم إضافة (data-category) لكل منتج ليعمل مع الفلترة -->
         <div class="products-grid" id="products-grid">
             
-            <!-- الكترونيات -->
             <div class="product-card" data-category="electronics">
                 <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ساعة ذكية">
                 <h3 class="product-title">ساعة ذكية متطورة</h3>
@@ -382,7 +450,6 @@
                 <button class="btn-add-cart" onclick="addToCart('سماعات رأس لاسلكية', 25000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- ادوات رياضية -->
             <div class="product-card" data-category="sports">
                 <img src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="دمبلز">
                 <h3 class="product-title">طقم أوزان دمبلز 10 كجم</h3>
@@ -390,7 +457,6 @@
                 <button class="btn-add-cart" onclick="addToCart('طقم أوزان دمبلز', 45000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- اجهزة المنزل -->
             <div class="product-card" data-category="home_appliances">
                 <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مكنسة">
                 <h3 class="product-title">مكنسة كهربائية لاسلكية</h3>
@@ -398,7 +464,6 @@
                 <button class="btn-add-cart" onclick="addToCart('مكنسة كهربائية لاسلكية', 85000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- اجهزة المطبخ -->
             <div class="product-card" data-category="kitchen">
                 <img src="https://images.unsplash.com/photo-1585237833596-3c06176395db?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="خلاط">
                 <h3 class="product-title">خلاط فواكه عالي السرعة</h3>
@@ -406,7 +471,6 @@
                 <button class="btn-add-cart" onclick="addToCart('خلاط فواكه', 30000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- العاب -->
             <div class="product-card" data-category="toys">
                 <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="لعبة سيارة">
                 <h3 class="product-title">سيارة تحكم عن بعد 4x4</h3>
@@ -414,7 +478,6 @@
                 <button class="btn-add-cart" onclick="addToCart('سيارة تحكم عن بعد', 20000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- ادوات السيارات -->
             <div class="product-card" data-category="cars">
                 <img src="https://images.unsplash.com/photo-1603509893976-13d80a1122a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="معطر سيارة">
                 <h3 class="product-title">مكنسة سيارة محمولة 12V</h3>
@@ -422,7 +485,6 @@
                 <button class="btn-add-cart" onclick="addToCart('مكنسة سيارة محمولة', 15000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- عدد وادوات -->
             <div class="product-card" data-category="tools">
                 <img src="https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ادوات">
                 <h3 class="product-title">حقيبة أدوات متكاملة (100 قطعة)</h3>
@@ -430,7 +492,6 @@
                 <button class="btn-add-cart" onclick="addToCart('حقيبة أدوات متكاملة', 55000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- اثاث -->
             <div class="product-card" data-category="furniture">
                 <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="كرسي">
                 <h3 class="product-title">كرسي استرخاء عصري</h3>
@@ -438,7 +499,6 @@
                 <button class="btn-add-cart" onclick="addToCart('كرسي استرخاء عصري', 120000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- انارة واضاءة -->
             <div class="product-card" data-category="lighting">
                 <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مصباح">
                 <h3 class="product-title">مصباح مكتبي LED ذكي</h3>
@@ -446,7 +506,6 @@
                 <button class="btn-add-cart" onclick="addToCart('مصباح مكتبي LED', 18000)">أضف إلى السلة 🛒</button>
             </div>
 
-            <!-- رسالة عدم وجود نتائج -->
             <div id="no-results" class="no-results">
                 عذراً، لم نجد أي منتج يطابق بحثك 🔍
             </div>
@@ -458,29 +517,20 @@
         <p>جميع الحقوق محفوظة &copy; 2026 - متجري.</p>
     </footer>
 
-    <!-- السكربت -->
     <script>
         const phoneNumber = "9647749270905";
         let cart = [];
         let toastTimer;
-        let currentCategory = 'all'; // الفئة الافتراضية
+        let currentCategory = 'all'; 
 
-        // تغيير الفئة وتطبيق الفلتر
         function setCategory(category, btnElement) {
             currentCategory = category;
-            
-            // إزالة الكلاس active من كل الأزرار
             const buttons = document.querySelectorAll('.category-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-            
-            // إضافة الكلاس active للزر المضغوط
             btnElement.classList.add('active');
-            
-            // تطبيق الفلتر (يدمج البحث مع الفئة)
             applyFilters();
         }
 
-        // دالة الفلترة (تدمج بين البحث النصي واختيار الفئة)
         function applyFilters() {
             const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
             const productCards = document.querySelectorAll('.product-card');
@@ -491,13 +541,9 @@
                 const title = card.querySelector('.product-title').innerText.toLowerCase();
                 const itemCategory = card.getAttribute('data-category');
                 
-                // التحقق من المطابقة النصية
                 const matchesSearch = title.includes(searchQuery);
-                
-                // التحقق من مطابقة الفئة
                 const matchesCategory = (currentCategory === 'all' || itemCategory === currentCategory);
 
-                // إذا تطابق البحث والفئة معاً، أظهر المنتج
                 if (matchesSearch && matchesCategory) {
                     card.style.display = 'flex';
                     hasResults = true;
@@ -505,12 +551,9 @@
                     card.style.display = 'none';
                 }
             });
-
-            // إظهار أو إخفاء رسالة عدم وجود نتائج
             noResultsMessage.style.display = hasResults ? 'none' : 'block';
         }
 
-        // دوال السلة (نفس السابقة)
         function showToast() {
             const toast = document.getElementById('toast');
             toast.classList.add('show');
@@ -583,6 +626,29 @@
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappURL, '_blank');
         }
+
+        // --- دوال تكبير الصورة (Lightbox) ---
+        function openImageModal(imgSrc) {
+            const modal = document.getElementById('image-modal');
+            const expandedImg = document.getElementById('expanded-image');
+            modal.style.display = "block";
+            expandedImg.src = imgSrc;
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = "none";
+        }
+
+        // ربط حدث الضغط على الصور لتشغيل نافذة التكبير
+        document.addEventListener("DOMContentLoaded", function() {
+            const productImages = document.querySelectorAll('.product-card img');
+            productImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    openImageModal(this.src);
+                });
+            });
+        });
     </script>
 </body>
 </html>
