@@ -234,8 +234,45 @@
             cursor: zoom-in;
         }
         .product-title { font-size: 1.3rem; margin: 15px 0 10px; color: #111; }
-        .product-price-display { color: var(--primary-color); font-weight: bold; font-size: 1.5rem; margin-bottom: 20px; }
+        .product-price-display { color: var(--primary-color); font-weight: bold; font-size: 1.5rem; margin-bottom: 15px; }
         
+        /* تحكم الكمية على بطاقة المنتج */
+        .card-qty-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .card-qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f3f4f6;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .card-qty-btn {
+            background: white;
+            border: 1px solid #d1d5db;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .card-qty-btn:hover { background: #e5e7eb; }
+        .card-qty-num {
+            font-weight: bold;
+            font-size: 1rem;
+            min-width: 24px;
+            text-align: center;
+        }
+
         .no-results {
             display: none;
             grid-column: 1 / -1;
@@ -432,7 +469,7 @@
             }
             .product-price-display {
                 font-size: 1.1rem;
-                margin-bottom: 12px;
+                margin-bottom: 10px;
             }
             .btn-add-cart {
                 padding: 8px;
@@ -476,6 +513,7 @@
     <div class="categories-wrapper">
         <div class="categories-container" id="category-filters">
             <button class="category-btn active" onclick="setCategory('all', this)">الكل</button>
+            <button class="category-btn" onclick="setCategory('makeup', this)">ميكب وعناية البشرة</button>
             <button class="category-btn" onclick="setCategory('electronics', this)">الكترونيات</button>
             <button class="category-btn" onclick="setCategory('home_appliances', this)">اجهزة المنزل</button>
             <button class="category-btn" onclick="setCategory('kitchen', this)">اجهزة المطبخ</button>
@@ -529,74 +567,197 @@
     <section id="products" class="products-section">
         <h2>أحدث المنتجات</h2>
         <div class="products-grid" id="products-grid">
+            
+            <!-- منتج 1 (ميكب وعناية البشرة) -->
+            <div class="product-card" data-category="makeup">
+                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="طقم مكياج">
+                <h3 class="product-title">طقم مكياج احترافي متكامل</h3>
+                <div class="product-price-display">40,000 د.ع</div>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'طقم مكياج احترافي متكامل', 40000)">أضف إلى السلة 🛒</button>
+            </div>
+
+            <!-- منتج 2 (ميكب وعناية البشرة) -->
+            <div class="product-card" data-category="makeup">
+                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="عناية بالبشرة">
+                <h3 class="product-title">سيروم وكريم عناية بالبشرة</h3>
+                <div class="product-price-display">28,000 د.ع</div>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'سيروم وكريم عناية بالبشرة', 28000)">أضف إلى السلة 🛒</button>
+            </div>
+
+            <!-- منتج 3 -->
             <div class="product-card" data-category="electronics">
                 <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ساعة ذكية">
                 <h3 class="product-title">ساعة ذكية متطورة</h3>
                 <div class="product-price-display">35,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('ساعة ذكية متطورة', 35000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'ساعة ذكية متطورة', 35000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 4 -->
             <div class="product-card" data-category="electronics">
                 <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="سماعات لاسلكية">
                 <h3 class="product-title">سماعات رأس لاسلكية</h3>
                 <div class="product-price-display">25,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('سماعات رأس لاسلكية', 25000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'سماعات رأس لاسلكية', 25000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 5 -->
             <div class="product-card" data-category="sports">
                 <img src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="دمبلز">
                 <h3 class="product-title">طقم أوزان دمبلز 10 كجم</h3>
                 <div class="product-price-display">45,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('طقم أوزان دمبلز', 45000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'طقم أوزان دمبلز', 45000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 6 -->
             <div class="product-card" data-category="home_appliances">
                 <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مكنسة">
                 <h3 class="product-title">مكنسة كهربائية لاسلكية</h3>
                 <div class="product-price-display">85,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('مكنسة كهربائية لاسلكية', 85000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'مكنسة كهربائية لاسلكية', 85000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 7 -->
             <div class="product-card" data-category="kitchen">
                 <img src="https://images.unsplash.com/photo-1585237833596-3c06176395db?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="خلاط">
                 <h3 class="product-title">خلاط فواكه عالي السرعة</h3>
                 <div class="product-price-display">30,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('خلاط فواكه', 30000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'خلاط فواكه', 30000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 8 -->
             <div class="product-card" data-category="toys">
                 <img src="https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="لعبة سيارة">
                 <h3 class="product-title">سيارة تحكم عن بعد 4x4</h3>
                 <div class="product-price-display">20,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('سيارة تحكم عن بعد', 20000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'سيارة تحكم عن بعد', 20000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 9 -->
             <div class="product-card" data-category="cars">
                 <img src="https://images.unsplash.com/photo-1603509893976-13d80a1122a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="معطر سيارة">
                 <h3 class="product-title">مكنسة سيارة محمولة 12V</h3>
                 <div class="product-price-display">15,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('مكنسة سيارة محمولة', 15000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'مكنسة سيارة محمولة', 15000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 10 -->
             <div class="product-card" data-category="tools">
                 <img src="https://images.unsplash.com/photo-1530893609608-32a9af3aa95c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ادوات">
                 <h3 class="product-title">حقيبة أدوات متكاملة (100 قطعة)</h3>
                 <div class="product-price-display">55,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('حقيبة أدوات متكاملة', 55000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'حقيبة أدوات متكاملة', 55000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 11 -->
             <div class="product-card" data-category="furniture">
                 <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="كرسي">
                 <h3 class="product-title">كرسي استرخاء عصري</h3>
                 <div class="product-price-display">120,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('كرسي استرخاء عصري', 120000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'كرسي استرخاء عصري', 120000)">أضف إلى السلة 🛒</button>
             </div>
 
+            <!-- منتج 12 -->
             <div class="product-card" data-category="lighting">
                 <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مصباح">
                 <h3 class="product-title">مصباح مكتبي LED ذكي</h3>
                 <div class="product-price-display">18,000 د.ع</div>
-                <button class="btn-add-cart" onclick="addToCart('مصباح مكتبي LED', 18000)">أضف إلى السلة 🛒</button>
+                <div class="card-qty-wrapper">
+                    <span style="font-size: 0.85rem; color: #666;">الكمية:</span>
+                    <div class="card-qty-controls">
+                        <button class="card-qty-btn" onclick="decreaseCardQty(this)">-</button>
+                        <span class="card-qty-num">1</span>
+                        <button class="card-qty-btn" onclick="increaseCardQty(this)">+</button>
+                    </div>
+                </div>
+                <button class="btn-add-cart" onclick="addToCartFromCard(this, 'مصباح مكتبي LED', 18000)">أضف إلى السلة 🛒</button>
             </div>
 
             <div id="no-results" class="no-results">
@@ -647,11 +808,38 @@
             noResultsMessage.style.display = hasResults ? 'none' : 'block';
         }
 
-        function showToast() {
+        function showToast(customText = "تمت إضافة المنتج إلى السلة بنجاح 🛒") {
             const toast = document.getElementById('toast');
+            toast.querySelector('span').innerText = customText;
             toast.classList.add('show');
             clearTimeout(toastTimer);
             toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        }
+
+        // --- التحكم بكمية المنتج على البطاقة ---
+        function increaseCardQty(btn) {
+            const numSpan = btn.parentElement.querySelector('.card-qty-num');
+            let qty = parseInt(numSpan.innerText);
+            numSpan.innerText = qty + 1;
+        }
+
+        function decreaseCardQty(btn) {
+            const numSpan = btn.parentElement.querySelector('.card-qty-num');
+            let qty = parseInt(numSpan.innerText);
+            if (qty > 1) {
+                numSpan.innerText = qty - 1;
+            }
+        }
+
+        function addToCartFromCard(btn, title, price) {
+            const card = btn.closest('.product-card');
+            const numSpan = card.querySelector('.card-qty-num');
+            const quantity = parseInt(numSpan.innerText);
+            
+            addToCart(title, price, quantity);
+            
+            // إعادة عداد البطاقة إلى 1 بعد الإضافة
+            numSpan.innerText = '1';
         }
 
         // فتح وإغلاق النوافذ (السلة والتفاصيل)
@@ -689,15 +877,15 @@
             document.getElementById('overlay-bg').style.display = 'none';
         }
 
-        function addToCart(title, price) {
+        function addToCart(title, price, quantity) {
             const existingItem = cart.find(item => item.title === title);
             if (existingItem) {
-                existingItem.quantity += 1;
+                existingItem.quantity += quantity;
             } else {
-                cart.push({ title: title, price: price, quantity: 1 });
+                cart.push({ title: title, price: price, quantity: quantity });
             }
             updateCartUI();
-            showToast();
+            showToast(`تمت إضافة ${quantity} من "${title}" إلى السلة 🛒`);
         }
 
         function increaseQuantity(index) {
@@ -757,7 +945,7 @@
             totalPriceElement.innerText = total.toLocaleString() + ' د.ع';
         }
 
-        // دالة إرسال الطلب عبر واتساب (مع وضع معلومات الزبون في البداية)
+        // دالة إرسال الطلب عبر واتساب (مع معلومات الزبون في المقدمة)
         function confirmAndSendOrder() {
             const name = document.getElementById('customer-name').value.trim();
             const phone = document.getElementById('customer-phone').value.trim();
@@ -778,7 +966,7 @@
             message += `🏠 *العنوان بالتفصيل:* ${address}%0A`;
             message += "━━━━━━━━━━━━━━━━━━━━%0A";
             
-            // تفاصيل المنتجات والمجموع في الأسفل
+            // تفاصيل المنتجات والكميات والمجموع في الأسفل
             message += "📦 *تفاصيل المنتجات المطلوبة:*%0A";
             
             let total = 0;
@@ -786,9 +974,9 @@
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
                 message += `${index + 1}. *${item.title}*%0A`;
-                message += `   🔹 السعر: ${item.price.toLocaleString()} د.ع%0A`;
-                message += `   🔹 الكمية: ${item.quantity}%0A`;
-                message += `   🔹 المجموع: ${itemTotal.toLocaleString()} د.ع%0A`;
+                message += `   🔹 السعر المفرد: ${item.price.toLocaleString()} د.ع%0A`;
+                message += `   🔹 الكمية المطلوبة: ${item.quantity}%0A`;
+                message += `   🔹 المجموع الفرعي: ${itemTotal.toLocaleString()} د.ع%0A`;
                 message += "----------------------------------------%0A";
             });
             
