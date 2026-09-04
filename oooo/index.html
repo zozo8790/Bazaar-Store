@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>متجري | أفضل المنتجات المتنوعة</title>
-    <!-- استدعاء خط Cairo من جوجل -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -363,7 +362,6 @@
 </head>
 <body>
 
-    <!-- شريط التنقل العلوي -->
     <header id="home">
         <div class="header-main">
             <a href="#home" class="logo">متجري.</a>
@@ -386,7 +384,6 @@
         </div>
     </header>
 
-    <!-- شريط الفئات -->
     <div class="categories-wrapper">
         <div class="category-btn active" onclick="filterByCategory('الكل', this)">
             <span class="icon">🏠</span> الكل
@@ -399,6 +396,12 @@
         </div>
         <div class="category-btn" onclick="filterByCategory('ملابس', this)">
             <span class="icon">👕</span> ملابس
+        </div>
+        <div class="category-btn" onclick="filterByCategory('أدوات منزلية', this)">
+            <span class="icon">🍳</span> أدوات منزلية
+        </div>
+        <div class="category-btn" onclick="filterByCategory('منوع', this)">
+            <span class="icon">✨</span> منوع
         </div>
         <div class="category-btn" onclick="filterByCategory('ألعاب', this)">
             <span class="icon">🧸</span> ألعاب منزلية
@@ -417,13 +420,11 @@
         </div>
     </div>
 
-    <!-- نافذة تكبير الصورة -->
     <div class="image-modal-overlay" id="imageModal">
         <span class="close-img-btn" onclick="closeImage()">×</span>
         <img id="zoomedImage" src="" alt="Zoomed">
     </div>
 
-    <!-- نافذة إدخال بيانات الزبون -->
     <div class="checkout-modal-overlay" id="checkoutModal">
         <div class="checkout-form-container">
             <h3>إتمام الطلب 📝</h3>
@@ -441,12 +442,10 @@
         </div>
     </div>
 
-    <!-- إشعار الإضافة للسلة -->
     <div id="toast" class="toast-notification">
         <span>✔️</span> <span id="toast-message">تمت الإضافة بنجاح</span>
     </div>
 
-    <!-- نافذة السلة الجانبية -->
     <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
@@ -467,13 +466,11 @@
         </div>
     </div>
 
-    <!-- القسم الرئيسي -->
     <section class="hero">
         <h1>متجرك الشامل والمتكامل</h1>
         <p>تسوق أفضل المنتجات بأعلى جودة وأفضل الأسعار في العراق.</p>
     </section>
 
-    <!-- شبكة المنتجات -->
     <section id="products" class="products-section">
         <h2 class="section-title">منتجاتنا المميزة</h2>
         <div class="products-grid" id="productsGrid">
@@ -490,16 +487,28 @@
                 <button class="btn-add-cart" onclick="addToCart(this, 'ساعة ذكية متطورة', 35000)">أضف للسلة</button>
             </div>
 
-            <div class="product-card" data-category="الكترونيات" data-title="سماعات رأس لاسلكية">
-                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="سماعات" onclick="openImage(this.src)">
-                <h3 class="product-title">سماعات رأس لاسلكية</h3>
-                <div class="product-price-display">25,000 د.ع</div>
+            <div class="product-card" data-category="أدوات منزلية" data-title="مجموعة ملاعق مطبخ ستيل">
+                <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مطبخ" onclick="openImage(this.src)">
+                <h3 class="product-title">مجموعة ملاعق مطبخ ستيل</h3>
+                <div class="product-price-display">15,000 د.ع</div>
                 <div class="quantity-box">
                     <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
                     <span class="product-qty">1</span>
                     <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
                 </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'سماعات رأس لاسلكية', 25000)">أضف للسلة</button>
+                <button class="btn-add-cart" onclick="addToCart(this, 'مجموعة ملاعق مطبخ ستيل', 15000)">أضف للسلة</button>
+            </div>
+
+            <div class="product-card" data-category="منوع" data-title="مفكرة يومية أنيقة مع قلم">
+                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مفكرة" onclick="openImage(this.src)">
+                <h3 class="product-title">مفكرة يومية أنيقة مع قلم</h3>
+                <div class="product-price-display">8,000 د.ع</div>
+                <div class="quantity-box">
+                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
+                    <span class="product-qty">1</span>
+                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
+                </div>
+                <button class="btn-add-cart" onclick="addToCart(this, 'مفكرة يومية أنيقة مع قلم', 8000)">أضف للسلة</button>
             </div>
 
             <div class="product-card" data-category="ميكب" data-title="مجموعة عناية بالبشرة">
@@ -514,22 +523,9 @@
                 <button class="btn-add-cart" onclick="addToCart(this, 'مجموعة عناية بالبشرة', 45000)">أضف للسلة</button>
             </div>
 
-            <div class="product-card" data-category="ملابس" data-title="نظارات شمسية كلاسيكية">
-                <img src="https://images.unsplash.com/photo-1620189507195-68309c04c4d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="نظارات" onclick="openImage(this.src)">
-                <h3 class="product-title">نظارات شمسية كلاسيكية</h3>
-                <div class="product-price-display">12,000 د.ع</div>
-                <div class="quantity-box">
-                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-                    <span class="product-qty">1</span>
-                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-                </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'نظارات شمسية كلاسيكية', 12000)">أضف للسلة</button>
-            </div>
-
         </div>
     </section>
 
-    <!-- قسم تواصل معنا -->
     <section id="contact" class="contact-section">
         <h2>تواصل معنا</h2>
         <p>هل لديك استفسار أو تريد مساعدة في طلبك؟ نحن هنا لخدمتك دائماً عبر الواتساب.</p>
@@ -538,7 +534,6 @@
         </a>
     </section>
 
-    <!-- السكربتات البرمجية -->
     <script>
         const phoneNumber = "9647749270905";
         let cart = [];
@@ -691,7 +686,7 @@
             openCart();
         }
 
-        // --- رسالة واتساب المطورة والمنسقة (تتضمن سعر القطعة، الكمية، والمجموع الفرعي لكل منتج) ---
+        // --- رسالة واتساب واضحة تتضمن سعر القطعة والكمية والمجموع الفرعي ---
         function sendWhatsAppOrder() {
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
