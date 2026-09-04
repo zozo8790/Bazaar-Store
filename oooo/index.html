@@ -691,7 +691,7 @@
             openCart();
         }
 
-        // --- رسالة واتساب المطورة والمنسقة باحترافية عالية ---
+        // --- رسالة واتساب المطورة والمنسقة (تتضمن سعر القطعة، الكمية، والمجموع الفرعي لكل منتج) ---
         function sendWhatsAppOrder() {
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
@@ -702,7 +702,7 @@
                 return;
             }
 
-            let message = `🛒 *طلب جديد وارد إلى المتجر*%0A`;
+            let message = `🛍️ *طلب جديد وارد إلى المتجر*%0A`;
             message += `═══════════════════════%0A`;
             message += `👤 *بيانات العميل الأساسية:*%0A`;
             message += `• *الاسم:* ${name}%0A`;
@@ -716,8 +716,9 @@
                 let itemTotal = item.price * item.quantity;
                 total += itemTotal;
                 message += `%0A*${index + 1}. ${item.title}*%0A`;
-                message += `   • الكمية: ${item.quantity}%0A`;
-                message += `   • السعر الإجمالي: ${itemTotal.toLocaleString()} د.ع%0A`;
+                message += `   • سعر القطعة: ${item.price.toLocaleString()} د.ع%0A`;
+                message += `   • الكمية المطلوبة: ${item.quantity}%0A`;
+                message += `   • المجموع الفرعي: ${itemTotal.toLocaleString()} د.ع%0A`;
             });
 
             message += `%0A═══════════════════════%0A`;
