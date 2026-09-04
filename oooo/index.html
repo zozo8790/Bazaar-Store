@@ -467,13 +467,24 @@
     </div>
 
     <section class="hero">
-        <h1>متجرك الشامل والمتكامل</h1>
         <p>تسوق أفضل المنتجات بأعلى جودة وأفضل الأسعار في العراق.</p>
     </section>
 
     <section id="products" class="products-section">
         <h2 class="section-title">منتجاتنا المميزة</h2>
         <div class="products-grid" id="productsGrid">
+
+            <div class="product-card" data-category="سيارة" data-title="غساله">
+    <img src="رابط_الصورة_هنا" alt="اسم المنتج" onclick="openImage(this.src)">
+    <h3 class="product-title">غساله</h3>
+    <div class="product-price-display">السعر 2,500 د.ع</div>
+    <div class="quantity-box">
+        <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
+        <span class="product-qty">1</span>
+        <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
+    </div>
+    <button class="btn-add-cart" onclick="addToCart(this, 'غساله', 2500)">أضف للسلة</button>
+</div>
             
             <div class="product-card" data-category="الكترونيات" data-title="ساعة ذكية متطورة">
                 <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ساعة ذكية" onclick="openImage(this.src)">
