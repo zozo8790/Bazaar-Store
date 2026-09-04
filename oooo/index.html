@@ -32,7 +32,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- شريط التنقل العلوي المحسن --- */
+        /* --- شريط التنقل العلوي --- */
         header {
             background-color: white;
             box-shadow: 0 2px 12px rgba(0,0,0,0.06);
@@ -58,7 +58,6 @@
             white-space: nowrap;
         }
 
-        /* روابط التنقل (الرئيسية، المنتجات، تواصل معنا) */
         .nav-links {
             display: flex;
             gap: 20px;
@@ -113,7 +112,7 @@
             align-items: center;
         }
 
-        /* --- مربع البحث الاحترافي --- */
+        /* --- مربع البحث --- */
         .search-container {
             width: 100%;
         }
@@ -134,7 +133,7 @@
             box-shadow: 0 0 8px rgba(37, 99, 235, 0.15);
         }
 
-        /* --- شريط الفئات (مع أيقونات وصور) --- */
+        /* --- شريط الفئات --- */
         .categories-wrapper {
             background-color: white;
             border-bottom: 1px solid #e5e7eb;
@@ -174,7 +173,7 @@
             box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
         }
 
-        /* --- القسم الرئيسي (Hero Section) --- */
+        /* --- القسم الرئيسي (Hero) --- */
         .hero {
             background: linear-gradient(rgba(37, 99, 235, 0.85), rgba(30, 64, 175, 0.9)), url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
             color: white;
@@ -349,7 +348,7 @@
 
         /* --- تحسينات الشاشات الصغيرة والمتوسطة --- */
         @media (max-width: 768px) {
-            .nav-links { display: none; /* إخفاء الروابط النصية على الهواتف الضيقة واكتفائها بالأيقونات أو القائمة البسيطة ويمكن إظهارها إن أردت */ }
+            .nav-links { display: none; }
             header { padding: 10px 3%; }
             .hero { padding: 35px 15px; }
             .hero h1 { font-size: 1.6rem; }
@@ -364,12 +363,11 @@
 </head>
 <body>
 
-    <!-- شريط التنقل العلوي المحسن -->
+    <!-- شريط التنقل العلوي -->
     <header id="home">
         <div class="header-main">
             <a href="#home" class="logo">متجري.</a>
             
-            <!-- الروابط العلوية المطلوب إضافتها -->
             <nav class="nav-links">
                 <a href="#home">الرئيسية</a>
                 <a href="#products">المنتجات</a>
@@ -383,13 +381,12 @@
             </div>
         </div>
 
-        <!-- مربع البحث -->
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="ابحث عما تريده في المتجر..." onkeyup="filterProducts()">
         </div>
     </header>
 
-    <!-- شريط الفئات (التصنيفات مع أيقونات وصور دلالية مختارة بعناية) -->
+    <!-- شريط الفئات -->
     <div class="categories-wrapper">
         <div class="category-btn active" onclick="filterByCategory('الكل', this)">
             <span class="icon">🏠</span> الكل
@@ -426,7 +423,7 @@
         <img id="zoomedImage" src="" alt="Zoomed">
     </div>
 
-    <!-- نافذة إدخال بيانات الزبون (Checkout Form) -->
+    <!-- نافذة إدخال بيانات الزبون -->
     <div class="checkout-modal-overlay" id="checkoutModal">
         <div class="checkout-form-container">
             <h3>إتمام الطلب 📝</h3>
@@ -470,7 +467,7 @@
         </div>
     </div>
 
-    <!-- القسم الرئيسي (Hero) -->
+    <!-- القسم الرئيسي -->
     <section class="hero">
         <h1>متجرك الشامل والمتكامل</h1>
         <p>تسوق أفضل المنتجات بأعلى جودة وأفضل الأسعار في العراق.</p>
@@ -548,7 +545,6 @@
         let toastTimeout;
         let currentCategory = 'الكل';
 
-        // --- تعديل الكمية على كرت المنتج قبل الإضافة ---
         function adjustCardQty(button, change) {
             const qtySpan = button.parentElement.querySelector('.product-qty');
             let currentQty = parseInt(qtySpan.innerText);
@@ -557,7 +553,6 @@
             qtySpan.innerText = currentQty;
         }
 
-        // --- تكبير الصورة ---
         function openImage(src) {
             document.getElementById('zoomedImage').src = src;
             document.getElementById('imageModal').style.display = 'flex';
@@ -566,13 +561,10 @@
             document.getElementById('imageModal').style.display = 'none';
         }
 
-        // --- نظام الفلترة (حسب الفئة والبحث) ---
         function filterByCategory(category, element) {
             currentCategory = category;
-            
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-
             applyFilters();
         }
 
@@ -599,7 +591,6 @@
             });
         }
 
-        // --- نظام السلة ---
         function showToast(title, qty) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = `تمت إضافة (${qty}) من "${title}"`;
@@ -686,7 +677,6 @@
             totalElem.innerText = total.toLocaleString() + ' د.ع';
         }
 
-        // --- نافذة معلومات الزبون والطلب عبر واتساب ---
         function openCheckoutModal() {
             if (cart.length === 0) {
                 alert("السلة فارغة، يرجى إضافة منتجات أولاً.");
@@ -701,6 +691,7 @@
             openCart();
         }
 
+        // --- رسالة واتساب المطورة والمنسقة باحترافية عالية ---
         function sendWhatsAppOrder() {
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
@@ -711,26 +702,27 @@
                 return;
             }
 
-            let message = `*طلب جديد من المتجر* 🛍️%0A%0A`;
-            
-            message += `----------------------------------%0A`;
-            message += `👤 *معلومات الزبون:*%0A`;
-            message += `• الاسم: ${name}%0A`;
-            message += `• الهاتف: ${phone}%0A`;
-            message += `• العنوان: ${address}%0A`;
-            message += `----------------------------------%0A%0A`;
-            
+            let message = `🛒 *طلب جديد وارد إلى المتجر*%0A`;
+            message += `═══════════════════════%0A`;
+            message += `👤 *بيانات العميل الأساسية:*%0A`;
+            message += `• *الاسم:* ${name}%0A`;
+            message += `• *الهاتف:* ${phone}%0A`;
+            message += `• *العنوان:* ${address}%0A`;
+            message += `═══════════════════════%0A`;
             message += `📦 *تفاصيل المنتجات المطلوبة:*%0A`;
+
             let total = 0;
             cart.forEach((item, index) => {
                 let itemTotal = item.price * item.quantity;
                 total += itemTotal;
-                message += `${index + 1}- ${item.title} | الكمية: (${item.quantity}) | السعر: ${itemTotal.toLocaleString()} د.ع%0A`;
+                message += `%0A*${index + 1}. ${item.title}*%0A`;
+                message += `   • الكمية: ${item.quantity}%0A`;
+                message += `   • السعر الإجمالي: ${itemTotal.toLocaleString()} د.ع%0A`;
             });
 
-            message += `%0A----------------------------------%0A`;
-            message += `💰 *المجموع الكلي: ${total.toLocaleString()} د.ع*%0A`;
-            message += `----------------------------------`;
+            message += `%0A═══════════════════════%0A`;
+            message += `💰 *المجموع الكلي للطلب: ${total.toLocaleString()} د.ع*%0A`;
+            message += `═══════════════════════`;
 
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappURL, '_blank');
