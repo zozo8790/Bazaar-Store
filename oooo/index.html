@@ -276,10 +276,45 @@
         .cart-header { background: var(--primary-color); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
         .close-btn { font-size: 1.5rem; cursor: pointer; }
         .cart-items-container { padding: 20px; flex-grow: 1; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
-        .item-info h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
-        .item-info p { margin: 0; color: var(--primary-color); font-weight: bold; }
-        .remove-item { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        
+        .cart-item { 
+            display: flex; 
+            flex-direction: column; 
+            border-bottom: 1px solid #eee; 
+            padding: 12px 0; 
+            gap: 8px;
+        }
+        .item-info h4 { margin: 0 0 3px 0; font-size: 1rem; }
+        .item-info p { margin: 0; color: var(--primary-color); font-weight: bold; font-size: 0.9rem; }
+        
+        .cart-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .qty-btn {
+            background: white;
+            border: 1px solid #d1d5db;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-btn:hover { background: #e5e7eb; }
+        .remove-item { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85rem; }
+        
         .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #f9fafb; }
         .cart-total { font-size: 1.3rem; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; }
         .btn-whatsapp { background-color: var(--whatsapp-color); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; }
@@ -644,7 +679,6 @@
                 alert("السلة فارغة، الرجاء إضافة منتجات أولاً.");
                 return;
             }
-            // إغلاق السلة الجانبية وفتح نافذة بيانات الزبون
             document.getElementById('cart-sidebar').classList.remove('active');
             document.getElementById('checkout-modal').classList.add('show');
             document.getElementById('overlay-bg').style.display = 'block';
@@ -656,9 +690,28 @@
         }
 
         function addToCart(title, price) {
-            cart.push({ title: title, price: price });
+            const existingItem = cart.find(item => item.title === title);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ title: title, price: price, quantity: 1 });
+            }
             updateCartUI();
             showToast();
+        }
+
+        function increaseQuantity(index) {
+            cart[index].quantity += 1;
+            updateCartUI();
+        }
+
+        function decreaseQuantity(index) {
+            if (cart[index].quantity > 1) {
+                cart[index].quantity -= 1;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
         }
 
         function removeFromCart(index) {
@@ -667,7 +720,8 @@
         }
 
         function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
             const cartItemsContainer = document.getElementById('cart-items');
             const totalPriceElement = document.getElementById('total-price');
             
@@ -680,14 +734,22 @@
             let itemsHTML = '';
             let total = 0;
             cart.forEach((item, index) => {
-                total += item.price;
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
                 itemsHTML += `
                     <div class="cart-item">
                         <div class="item-info">
                             <h4>${item.title}</h4>
-                            <p>${item.price.toLocaleString()} د.ع</p>
+                            <p>${item.price.toLocaleString()} د.ع × ${item.quantity} = <strong>${itemTotal.toLocaleString()} د.ع</strong></p>
                         </div>
-                        <button class="remove-item" onclick="removeFromCart(${index})">حذف</button>
+                        <div class="cart-item-actions">
+                            <div class="qty-controls">
+                                <button class="qty-btn" onclick="decreaseQuantity(${index})">-</button>
+                                <span style="font-weight: bold; font-size: 0.95rem; min-width: 20px; text-align: center;">${item.quantity}</span>
+                                <button class="qty-btn" onclick="increaseQuantity(${index})">+</button>
+                            </div>
+                            <button class="remove-item" onclick="removeFromCart(${index})">حذف</button>
+                        </div>
                     </div>
                 `;
             });
@@ -695,7 +757,7 @@
             totalPriceElement.innerText = total.toLocaleString() + ' د.ع';
         }
 
-        // دالة تأكيد وإرسال الطلب بعد تعبئة البيانات
+        // دالة تأكيد وإرسال الطلب المنظمة والاحترافية عبر واتساب
         function confirmAndSendOrder() {
             const name = document.getElementById('customer-name').value.trim();
             const phone = document.getElementById('customer-phone').value.trim();
@@ -706,21 +768,33 @@
                 return;
             }
 
-            let message = "مرحباً، أود طلب المنتجات التالية:%0A%0A";
+            let message = "🛍️ *طلب شراء جديد عبر المتجر*%0A";
+            message += "━━━━━━━━━━━━━━━━━━━━%0A";
+            message += "📦 *تفاصيل المنتجات المطلوبة:*%0A";
+            
             let total = 0;
             cart.forEach((item, index) => {
-                message += `${index + 1}- ${item.title} (${item.price.toLocaleString()} د.ع)%0A`;
-                total += item.price;
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `${index + 1}. *${item.title}*%0A`;
+                message += `   🔹 السعر: ${item.price.toLocaleString()} د.ع%0A`;
+                message += `   🔹 الكمية: ${item.quantity}%0A`;
+                message += `   🔹 المجموع: ${itemTotal.toLocaleString()} د.ع%0A`;
+                message += "----------------------------------------%0A";
             });
-            message += `%0A*المجموع الكلي: ${total.toLocaleString()} د.ع*%0A`;
             
-            // إضافة تفاصيل الزبون للرسالة
-            message += `%0A*تفاصيل التوصيل:*%0A👤 الاسم: ${name}%0A📱 رقم الهاتف: ${phone}%0A📍 العنوان: ${address}`;
+            message += `💰 *المجموع الكلي للطلب:* *${total.toLocaleString()} د.ع*%0A`;
+            message += "━━━━━━━━━━━━━━━━━━━━%0A";
+            message += "📍 *معلومات التوصيل والزبون:*%0A";
+            message += `👤 *الاسم الكامل:* ${name}%0A`;
+            message += `📱 *رقم الهاتف:* ${phone}%0A`;
+            message += `🏠 *العنوان بالتفصيل:* ${address}%0A`;
+            message += "━━━━━━━━━━━━━━━━━━━━%0A";
+            message += "🙏 يرجى تأكيد الطلب وترتيب عملية التوصيل في أقرب وقت.";
 
             const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
             window.open(whatsappURL, '_blank');
             
-            // إغلاق النافذة بعد الإرسال
             closeCheckoutModal();
         }
 
