@@ -757,7 +757,7 @@
             totalPriceElement.innerText = total.toLocaleString() + ' د.ع';
         }
 
-        // دالة تأكيد وإرسال الطلب المنظمة والاحترافية عبر واتساب
+        // دالة إرسال الطلب عبر واتساب (مع وضع معلومات الزبون في البداية)
         function confirmAndSendOrder() {
             const name = document.getElementById('customer-name').value.trim();
             const phone = document.getElementById('customer-phone').value.trim();
@@ -770,6 +770,15 @@
 
             let message = "🛍️ *طلب شراء جديد عبر المتجر*%0A";
             message += "━━━━━━━━━━━━━━━━━━━━%0A";
+            
+            // معلومات الزبون في البداية
+            message += "📍 *معلومات التوصيل والزبون:*%0A";
+            message += `👤 *الاسم الكامل:* ${name}%0A`;
+            message += `📱 *رقم الهاتف:* ${phone}%0A`;
+            message += `🏠 *العنوان بالتفصيل:* ${address}%0A`;
+            message += "━━━━━━━━━━━━━━━━━━━━%0A";
+            
+            // تفاصيل المنتجات والمجموع في الأسفل
             message += "📦 *تفاصيل المنتجات المطلوبة:*%0A";
             
             let total = 0;
@@ -784,11 +793,6 @@
             });
             
             message += `💰 *المجموع الكلي للطلب:* *${total.toLocaleString()} د.ع*%0A`;
-            message += "━━━━━━━━━━━━━━━━━━━━%0A";
-            message += "📍 *معلومات التوصيل والزبون:*%0A";
-            message += `👤 *الاسم الكامل:* ${name}%0A`;
-            message += `📱 *رقم الهاتف:* ${phone}%0A`;
-            message += `🏠 *العنوان بالتفصيل:* ${address}%0A`;
             message += "━━━━━━━━━━━━━━━━━━━━%0A";
             message += "🙏 يرجى تأكيد الطلب وترتيب عملية التوصيل في أقرب وقت.";
 
