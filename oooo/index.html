@@ -17,6 +17,7 @@
             --secondary-color: #1e40af;
             --whatsapp-color: #25D366;
             --success-color: #10b981;
+            --danger-color: #ef4444;
             --background: #f3f4f6;
             --text-color: #1f2937;
         }
@@ -80,6 +81,21 @@
             align-items: center;
             gap: 12px;
         }
+
+        /* زر الإدارة */
+        .btn-admin {
+            background-color: #1f2937;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-family: 'Cairo';
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-admin:hover { background-color: #374151; }
 
         /* أيقونة السلة */
         .cart-icon-container {
@@ -162,9 +178,7 @@
             border: 1px solid #e5e7eb;
             flex-shrink: 0;
         }
-        .category-btn span.icon {
-            font-size: 1.1rem;
-        }
+        .category-btn span.icon { font-size: 1.1rem; }
         .category-btn:hover, .category-btn.active {
             background: var(--primary-color);
             color: white;
@@ -180,7 +194,6 @@
             padding: 50px 20px;
         }
         .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
-        .hero p { font-size: 1rem; margin: 0; opacity: 0.9; }
 
         /* --- قسم المنتجات --- */
         .products-section { padding: 30px 4%; }
@@ -201,10 +214,9 @@
             flex-direction: column;
             border: 1px solid #e5e7eb;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
         }
-        .product-card:hover {
-            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-        }
+        .product-card:hover { box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
         .product-card img { 
             width: 100%; 
             height: 150px; 
@@ -215,7 +227,6 @@
         .product-title { font-size: 1rem; margin: 10px 0 5px; color: #111; font-weight: 700; }
         .product-price-display { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
         
-        /* --- محدد الكمية --- */
         .quantity-box {
             display: flex;
             align-items: center;
@@ -262,6 +273,18 @@
         }
         .btn-add-cart:hover { background-color: var(--secondary-color); }
 
+        .btn-delete-product {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
         /* --- قسم تواصل معنا --- */
         .contact-section {
             background: white;
@@ -288,43 +311,38 @@
         }
         .contact-btn:hover { background-color: #1ebe57; transform: translateY(-2px); }
 
-        /* --- نافذة تكبير الصورة --- */
-        .image-modal-overlay {
+        /* --- النوافذ المنبثقة (Modals) --- */
+        .modal-overlay {
             display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; padding: 15px;
+            background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; padding: 15px;
         }
-        .image-modal-overlay img { max-width: 100%; max-height: 85vh; border-radius: 8px; object-fit: contain; }
-        .close-img-btn {
-            position: absolute; top: 15px; right: 20px; color: white; font-size: 35px; font-weight: bold; cursor: pointer;
+        .modal-content {
+            background: white; width: 100%; max-width: 420px; padding: 22px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: right;
+        }
+        .modal-content h3 { margin-top: 0; color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem;}
+        .modal-content label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.88rem;}
+        .modal-content input, .modal-content select, .modal-content textarea {
+            width: 100%; padding: 9px 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 0.9rem; outline: none;
+        }
+        .modal-content input:focus, .modal-content select:focus { border-color: var(--primary-color); }
+        .modal-buttons { display: flex; gap: 8px; }
+        .btn-primary-action {
+            background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 8px;
+            font-size: 0.95rem; font-weight: bold; width: 100%; cursor: pointer;
+        }
+        .btn-cancel-action {
+            background-color: #f3f4f6; color: #4b5563; padding: 10px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; font-size: 0.95rem;
         }
 
-        /* --- نافذة إدخال المعلومات (Checkout Form) --- */
-        .checkout-modal-overlay {
-            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); justify-content: center; align-items: center; padding: 15px;
-        }
-        .checkout-form-container {
-            background: white; width: 100%; max-width: 400px; padding: 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: right;
-        }
-        .checkout-form-container h3 { margin-top: 0; color: var(--primary-color); margin-bottom: 15px; font-size: 1.2rem;}
-        .checkout-form-container label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem;}
-        .checkout-form-container input, .checkout-form-container textarea {
-            width: 100%; padding: 10px 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 0.95rem; outline: none;
-        }
-        .checkout-form-container input:focus, .checkout-form-container textarea:focus { border-color: var(--primary-color); }
-        .btn-confirm-order {
-            background-color: var(--whatsapp-color); color: white; padding: 11px; border: none; border-radius: 8px;
-            font-size: 1rem; font-weight: bold; width: 100%; cursor: pointer; margin-top: 5px;
-        }
-        .btn-cancel {
-            background-color: #f3f4f6; color: #4b5563; padding: 10px; border: none; border-radius: 8px; width: 100%; cursor: pointer; margin-top: 8px; font-weight: bold; font-size: 0.9rem;
-        }
+        /* --- صورة تكبير --- */
+        .image-modal-overlay { display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; }
+        .image-modal-overlay img { max-width: 90%; max-height: 85vh; border-radius: 8px; }
 
         /* --- إشعار الإضافة للسلة --- */
         .toast-notification {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(100px);
             background-color: var(--success-color); color: white; padding: 10px 20px; border-radius: 30px;
-            font-weight: bold; display: flex; align-items: center; gap: 8px; z-index: 2500; opacity: 0; transition: 0.3s; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-weight: bold; display: flex; align-items: center; gap: 8px; z-index: 3500; opacity: 0; transition: 0.3s; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .toast-notification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -340,21 +358,16 @@
         .cart-item-info p { margin: 0; color: var(--primary-color); font-weight: bold; font-size: 0.9rem; }
         .cart-item-actions { display: flex; align-items: center; gap: 8px; }
         .remove-item { background: #fee2e2; color: #dc2626; border: none; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
-        
         .cart-footer { padding: 15px; border-top: 1px solid #e5e7eb; background: #f9fafb; }
         .cart-total { font-size: 1.05rem; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; }
         .btn-checkout { background-color: var(--primary-color); color: white; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; }
 
-        /* --- تحسينات الشاشات الصغيرة والمتوسطة --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             header { padding: 10px 3%; }
             .hero { padding: 35px 15px; }
             .hero h1 { font-size: 1.6rem; }
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .product-card { padding: 8px; }
             .product-card img { height: 120px; }
         }
@@ -373,6 +386,7 @@
             </nav>
 
             <div class="header-actions">
+                <button class="btn-admin" onclick="handleAdminAccess()">🔐 الإدارة</button>
                 <div class="cart-icon-container" onclick="openCart()">
                     🛒 <span class="cart-badge" id="cart-count">0</span>
                 </div>
@@ -385,60 +399,78 @@
     </header>
 
     <div class="categories-wrapper">
-        <div class="category-btn active" onclick="filterByCategory('الكل', this)">
-            <span class="icon">🏠</span> الكل
-        </div>
-        <div class="category-btn" onclick="filterByCategory('ميكب', this)">
-            <span class="icon">💄</span> ميكب وعناية بالبشرة
-        </div>
-        <div class="category-btn" onclick="filterByCategory('الكترونيات', this)">
-            <span class="icon">💻</span> إلكترونيات
-        </div>
-        <div class="category-btn" onclick="filterByCategory('ملابس', this)">
-            <span class="icon">👕</span> ملابس
-        </div>
-        <div class="category-btn" onclick="filterByCategory('أدوات منزلية', this)">
-            <span class="icon">🍳</span> أدوات منزلية
-        </div>
-        <div class="category-btn" onclick="filterByCategory('منوع', this)">
-            <span class="icon">✨</span> منوع
-        </div>
-        <div class="category-btn" onclick="filterByCategory('ألعاب', this)">
-            <span class="icon">🧸</span> ألعاب منزلية
-        </div>
-        <div class="category-btn" onclick="filterByCategory('سيارة', this)">
-            <span class="icon">🚗</span> أدوات سيارة
-        </div>
-        <div class="category-btn" onclick="filterByCategory('إنارة', this)">
-            <span class="icon">💡</span> إنارة وإضاءة
-        </div>
-        <div class="category-btn" onclick="filterByCategory('رياضية', this)">
-            <span class="icon">⚽</span> أدوات رياضية
-        </div>
-        <div class="category-btn" onclick="filterByCategory('كهربائية', this)">
-            <span class="icon">🔌</span> أجهزة كهربائية
+        <div class="category-btn active" onclick="filterByCategory('الكل', this)"><span class="icon">🏠</span> الكل</div>
+        <div class="category-btn" onclick="filterByCategory('ميكب', this)"><span class="icon">💄</span> ميكب وعناية بالبشرة</div>
+        <div class="category-btn" onclick="filterByCategory('الكترونيات', this)"><span class="icon">💻</span> إلكترونيات</div>
+        <div class="category-btn" onclick="filterByCategory('ملابس', this)"><span class="icon">👕</span> ملابس</div>
+        <div class="category-btn" onclick="filterByCategory('أدوات منزلية', this)"><span class="icon">🍳</span> أدوات منزلية</div>
+        <div class="category-btn" onclick="filterByCategory('منوع', this)"><span class="icon">✨</span> منوع</div>
+        <div class="category-btn" onclick="filterByCategory('ألعاب', this)"><span class="icon">🧸</span> ألعاب منزلية</div>
+        <div class="category-btn" onclick="filterByCategory('سيارة', this)"><span class="icon">🚗</span> أدوات سيارة</div>
+        <div class="category-btn" onclick="filterByCategory('إنارة', this)"><span class="icon">💡</span> إنارة وإضاءة</div>
+        <div class="category-btn" onclick="filterByCategory('رياضية', this)"><span class="icon">⚽</span> أدوات رياضية</div>
+        <div class="category-btn" onclick="filterByCategory('كهربائية', this)"><span class="icon">🔌</span> أجهزة كهربائية</div>
+    </div>
+
+    <!-- نافذة الإدارة إضافة منتج -->
+    <div class="modal-overlay" id="addProductModal">
+        <div class="modal-content">
+            <h3>إضافة منتج جديد ➕</h3>
+            <label>اسم المنتج:</label>
+            <input type="text" id="newProdTitle" placeholder="مثال: ساعة ذكية">
+
+            <label>الفئة:</label>
+            <select id="newProdCategory">
+                <option value="الكترونيات">إلكترونيات</option>
+                <option value="ميكب">ميكب وعناية بالبشرة</option>
+                <option value="ملابس">ملابس</option>
+                <option value="أدوات منزلية">أدوات منزلية</option>
+                <option value="منوع">منوع</option>
+                <option value="ألعاب">ألعاب منزلية</option>
+                <option value="سيارة">أدوات سيارة</option>
+                <option value="إنارة">إنارة وإضاءة</option>
+                <option value="رياضية">أدوات رياضية</option>
+                <option value="كهربائية">أجهزة كهربائية</option>
+            </select>
+
+            <label>السعر (بالدينار العراقي):</label>
+            <input type="number" id="newProdPrice" placeholder="مثال: 15000">
+
+            <label>رابط الصورة (URL):</label>
+            <input type="text" id="newProdImgUrl" placeholder="https://example.com/image.jpg">
+
+            <label>أو ارفع صورة من جهازك:</label>
+            <input type="file" id="newProdImgFile" accept="image/*">
+
+            <div class="modal-buttons">
+                <button class="btn-primary-action" onclick="saveNewProduct()">حفظ ونشر المنتج</button>
+                <button class="btn-cancel-action" onclick="closeAddProductModal()">إلغاء</button>
+            </div>
         </div>
     </div>
 
-    <div class="image-modal-overlay" id="imageModal">
-        <span class="close-img-btn" onclick="closeImage()">×</span>
+    <!-- نافذة تكبير الصورة -->
+    <div class="image-modal-overlay" id="imageModal" onclick="closeImage()">
         <img id="zoomedImage" src="" alt="Zoomed">
     </div>
 
-    <div class="checkout-modal-overlay" id="checkoutModal">
-        <div class="checkout-form-container">
+    <!-- نافذة إتمام الطلب -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content">
             <h3>إتمام الطلب 📝</h3>
             <label>الاسم الكامل:</label>
-            <input type="text" id="customerName" placeholder="اكتب اسمك هنا" required>
+            <input type="text" id="customerName" placeholder="اكتب اسمك هنا">
             
             <label>رقم الهاتف:</label>
-            <input type="tel" id="customerPhone" placeholder="07XXXXXXXXX" required>
+            <input type="tel" id="customerPhone" placeholder="07XXXXXXXXX">
             
             <label>العنوان بالتفصيل:</label>
-            <textarea id="customerAddress" rows="3" placeholder="المحافظة، المنطقة، أقرب نقطة دالة..." required></textarea>
+            <textarea id="customerAddress" rows="3" placeholder="المحافظة، المنطقة، أقرب نقطة دالة..."></textarea>
             
-            <button class="btn-confirm-order" onclick="sendWhatsAppOrder()">إرسال الطلب عبر واتساب 💬</button>
-            <button class="btn-cancel" onclick="closeCheckoutModal()">إلغاء والرجوع للسلة</button>
+            <div class="modal-buttons" style="flex-direction: column;">
+                <button class="btn-primary-action" style="background-color: var(--whatsapp-color);" onclick="sendWhatsAppOrder()">إرسال الطلب عبر واتساب 💬</button>
+                <button class="btn-cancel-action" onclick="closeCheckoutModal()">إلغاء والرجوع للسلة</button>
+            </div>
         </div>
     </div>
 
@@ -460,9 +492,7 @@
                 <span>المجموع الكلي:</span>
                 <span id="total-price">0 د.ع</span>
             </div>
-            <button class="btn-checkout" onclick="openCheckoutModal()">
-                إتمام الطلب الآن
-            </button>
+            <button class="btn-checkout" onclick="openCheckoutModal()">إتمام الطلب الآن</button>
         </div>
     </div>
 
@@ -472,69 +502,7 @@
 
     <section id="products" class="products-section">
         <h2 class="section-title">منتجاتنا المميزة</h2>
-        <div class="products-grid" id="productsGrid">
-
-            <div class="product-card" data-category="سيارة" data-title="غساله">
-    <img src="رابط_الصورة_هنا" alt="اسم المنتج" onclick="openImage(this.src)">
-    <h3 class="product-title">غساله</h3>
-    <div class="product-price-display">السعر 2,500 د.ع</div>
-    <div class="quantity-box">
-        <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-        <span class="product-qty">1</span>
-        <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-    </div>
-    <button class="btn-add-cart" onclick="addToCart(this, 'غساله', 2500)">أضف للسلة</button>
-</div>
-            
-            <div class="product-card" data-category="الكترونيات" data-title="ساعة ذكية متطورة">
-                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ساعة ذكية" onclick="openImage(this.src)">
-                <h3 class="product-title">ساعة ذكية متطورة</h3>
-                <div class="product-price-display">35,000 د.ع</div>
-                <div class="quantity-box">
-                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-                    <span class="product-qty">1</span>
-                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-                </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'ساعة ذكية متطورة', 35000)">أضف للسلة</button>
-            </div>
-
-            <div class="product-card" data-category="أدوات منزلية" data-title="مجموعة ملاعق مطبخ ستيل">
-                <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مطبخ" onclick="openImage(this.src)">
-                <h3 class="product-title">مجموعة ملاعق مطبخ ستيل</h3>
-                <div class="product-price-display">15,000 د.ع</div>
-                <div class="quantity-box">
-                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-                    <span class="product-qty">1</span>
-                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-                </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'مجموعة ملاعق مطبخ ستيل', 15000)">أضف للسلة</button>
-            </div>
-
-            <div class="product-card" data-category="منوع" data-title="مفكرة يومية أنيقة مع قلم">
-                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="مفكرة" onclick="openImage(this.src)">
-                <h3 class="product-title">مفكرة يومية أنيقة مع قلم</h3>
-                <div class="product-price-display">8,000 د.ع</div>
-                <div class="quantity-box">
-                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-                    <span class="product-qty">1</span>
-                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-                </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'مفكرة يومية أنيقة مع قلم', 8000)">أضف للسلة</button>
-            </div>
-
-            <div class="product-card" data-category="ميكب" data-title="مجموعة عناية بالبشرة">
-                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="ميكب" onclick="openImage(this.src)">
-                <h3 class="product-title">مجموعة عناية بالبشرة</h3>
-                <div class="product-price-display">45,000 د.ع</div>
-                <div class="quantity-box">
-                    <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
-                    <span class="product-qty">1</span>
-                    <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
-                </div>
-                <button class="btn-add-cart" onclick="addToCart(this, 'مجموعة عناية بالبشرة', 45000)">أضف للسلة</button>
-            </div>
-
-        </div>
+        <div class="products-grid" id="productsGrid"></div>
     </section>
 
     <section id="contact" class="contact-section">
@@ -547,9 +515,144 @@
 
     <script>
         const phoneNumber = "9647749270905";
+        const ADMIN_PIN = "123456"; // 🔑 كلمة سر الإدارة (يمكنك تغييرها)
+
+        let isAdmin = false;
         let cart = [];
         let toastTimeout;
         let currentCategory = 'الكل';
+
+        // المنتجات الافتراضية
+        const defaultProducts = [
+            { id: 1, title: "غساله", category: "سيارة", price: 2500, img: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=400&q=80" },
+            { id: 2, title: "ساعة ذكية متطورة", category: "الكترونيات", price: 35000, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" },
+            { id: 3, title: "مجموعة ملاعق مطبخ ستيل", category: "أدوات منزلية", price: 15000, img: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=400&q=80" },
+            { id: 4, title: "مفكرة يومية أنيقة مع قلم", category: "منوع", price: 8000, img: "https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&q=80" },
+            { id: 5, title: "مجموعة عناية بالبشرة", category: "ميكب", price: 45000, img: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&q=80" }
+        ];
+
+        // تحميل المنتجات من localStorage أو تعيين الافتراضية
+        function getProducts() {
+            const saved = localStorage.getItem('zona_products');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            localStorage.setItem('zona_products', JSON.stringify(defaultProducts));
+            return defaultProducts;
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem('zona_products', JSON.stringify(products));
+            renderProducts();
+        }
+
+        // عرض المنتجات في الشبكة
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const products = getProducts();
+            grid.innerHTML = '';
+
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.setAttribute('data-category', p.category);
+                card.setAttribute('data-title', p.title);
+
+                card.innerHTML = `
+                    <img src="${p.img || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${p.title}" onclick="openImage(this.src)">
+                    <h3 class="product-title">${p.title}</h3>
+                    <div class="product-price-display">${p.price.toLocaleString()} د.ع</div>
+                    <div class="quantity-box">
+                        <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
+                        <span class="product-qty">1</span>
+                        <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
+                    </div>
+                    <button class="btn-add-cart" onclick="addToCart(this, '${p.title}', ${p.price})">أضف للسلة</button>
+                    ${isAdmin ? `<button class="btn-delete-product" onclick="deleteProduct(${p.id})">🗑️ حذف المنتج</button>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+
+            applyFilters();
+        }
+
+        // تسجيل دخول الإدارة
+        function handleAdminAccess() {
+            if (isAdmin) {
+                document.getElementById('addProductModal').style.display = 'flex';
+                return;
+            }
+
+            const inputPin = prompt("🔐 أدخل كلمة السر للوصول إلى لوحة الإضافة:");
+            if (inputPin === ADMIN_PIN) {
+                isAdmin = true;
+                alert("تم تسجيل الدخول كمسؤول بنجاح!");
+                renderProducts();
+                document.getElementById('addProductModal').style.display = 'flex';
+            } else if (inputPin !== null) {
+                alert("كلمة السر غير صحيحة!");
+            }
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'none';
+        }
+
+        // حفظ منتج جديد
+        function saveNewProduct() {
+            const title = document.getElementById('newProdTitle').value.trim();
+            const category = document.getElementById('newProdCategory').value;
+            const price = parseFloat(document.getElementById('newProdPrice').value);
+            const imgUrl = document.getElementById('newProdImgUrl').value.trim();
+            const imgFile = document.getElementById('newProdImgFile').files[0];
+
+            if (!title || isNaN(price) || price <= 0) {
+                alert("يرجى إدخال اسم منتج وسعر صحيحين!");
+                return;
+            }
+
+            const executeSave = (imageUrl) => {
+                const products = getProducts();
+                const newProduct = {
+                    id: Date.now(),
+                    title: title,
+                    category: category,
+                    price: price,
+                    img: imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80"
+                };
+
+                products.unshift(newProduct);
+                saveProducts(products);
+                closeAddProductModal();
+
+                // إعادة تعيين الحقول
+                document.getElementById('newProdTitle').value = '';
+                document.getElementById('newProdPrice').value = '';
+                document.getElementById('newProdImgUrl').value = '';
+                document.getElementById('newProdImgFile').value = '';
+
+                alert("تمت إضافة المنتج بنجاح!");
+            };
+
+            if (imgFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    executeSave(e.target.result);
+                };
+                reader.readAsDataURL(imgFile);
+            } else {
+                executeSave(imgUrl);
+            }
+        }
+
+        // حذف منتج
+        function deleteProduct(id) {
+            if (confirm("هل أنت تأكد من رغبتك في حذف هذا المنتج؟")) {
+                let products = getProducts();
+                products = products.filter(p => p.id !== id);
+                saveProducts(products);
+            }
+        }
 
         function adjustCardQty(button, change) {
             const qtySpan = button.parentElement.querySelector('.product-qty');
@@ -697,7 +800,6 @@
             openCart();
         }
 
-        // --- رسالة واتساب واضحة تتضمن سعر القطعة والكمية والمجموع الفرعي ---
         function sendWhatsAppOrder() {
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
@@ -736,6 +838,9 @@
             
             document.getElementById('checkoutModal').style.display = 'none';
         }
+
+        // تشغيل التطبيق عند التحميل
+        document.addEventListener('DOMContentLoaded', renderProducts);
     </script>
 </body>
 </html>
