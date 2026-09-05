@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ZONA STORE| أفضل المنتجات المتنوعة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>ZONA STORE | التسوق الممتع والاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <!-- مكتبات Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -14,177 +14,272 @@
         *, *::before, *::after { box-sizing: border-box; }
         :root {
             --primary-color: #2563eb;
-            --secondary-color: #1e40af;
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            --accent-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --secondary-color: #0f172a;
             --whatsapp-color: #25D366;
             --success-color: #10b981;
             --danger-color: #ef4444;
             --warning-color: #f59e0b;
-            --background: #f3f4f6;
-            --text-color: #1f2937;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --shadow-hover: 0 20px 25px -5px rgba(37, 99, 235, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0; padding: 0;
             background-color: var(--background);
-            color: var(--text-color);
+            color: var(--text-main);
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
+        /* شريط سفلي متدرج للجمالية */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            z-index: 1000;
+        }
+
+        /* الهيدر العلوي الزجاجي */
         header {
-            background-color: white;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            position: sticky; top: 0; z-index: 100; padding: 12px 4%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky; top: 0; z-index: 100;
+            padding: 12px 5%;
+            transition: all 0.3s ease;
         }
 
         .header-main {
-            display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 12px;
         }
 
-        .logo { font-size: 1.6rem; font-weight: bold; color: var(--primary-color); text-decoration: none; white-space: nowrap; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 0.95rem; }
+        .logo {
+            font-size: 1.7rem; font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links { display: flex; gap: 24px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 0.95rem;
+            transition: color 0.2s;
+        }
         .nav-links a:hover { color: var(--primary-color); }
+
         .header-actions { display: flex; align-items: center; gap: 12px; }
 
         .btn-admin {
-            background-color: #1f2937; color: white; border: none; padding: 8px 14px;
-            border-radius: 20px; font-family: 'Cairo'; font-size: 0.85rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+            background: var(--secondary-color); color: white; border: none; padding: 8px 16px;
+            border-radius: 30px; font-family: 'Cairo'; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease; box-shadow: var(--shadow-sm);
         }
-        .btn-admin:hover { background-color: #374151; }
+        .btn-admin:hover { transform: translateY(-1px); background: #1e293b; }
 
         .cart-icon-container {
-            position: relative; cursor: pointer; font-size: 1.3rem; background: #f3f4f6;
-            padding: 8px 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            position: relative; cursor: pointer; font-size: 1.2rem;
+            background: #f1f5f9; width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; border: 1px solid var(--border-color);
         }
+        .cart-icon-container:hover { background: #e2e8f0; transform: scale(1.05); }
+        
         .cart-badge {
-            position: absolute; top: -2px; right: -2px; background-color: #ef4444; color: white;
-            font-size: 0.7rem; font-weight: bold; width: 18px; height: 18px; border-radius: 50%;
+            position: absolute; top: -3px; right: -3px;
+            background: var(--accent-gradient); color: white;
+            font-size: 0.7rem; font-weight: 800; width: 20px; height: 20px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
         }
 
-        .search-container { width: 100%; }
+        .search-container { width: 100%; max-width: 800px; margin: 0 auto; position: relative; }
         .search-input {
-            width: 100%; padding: 10px 18px; border: 1px solid #e5e7eb; border-radius: 25px;
-            font-family: 'Cairo', sans-serif; font-size: 0.95rem; outline: none; background-color: #f9fafb;
+            width: 100%; padding: 10px 20px 10px 45px; border: 1px solid var(--border-color);
+            border-radius: 30px; font-family: 'Cairo', sans-serif; font-size: 0.92rem;
+            outline: none; background-color: #f8fafc; transition: all 0.25s ease;
         }
-        .search-input:focus { border-color: var(--primary-color); background-color: white; box-shadow: 0 0 8px rgba(37, 99, 235, 0.15); }
+        .search-input:focus {
+            border-color: var(--primary-color); background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
 
+        /* شريط التصنيفات */
         .categories-wrapper {
-            background-color: white; border-bottom: 1px solid #e5e7eb; overflow-x: auto;
-            white-space: nowrap; padding: 12px 4%; display: flex; gap: 10px; scrollbar-width: none;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto; white-space: nowrap; padding: 10px 5%;
+            display: flex; gap: 8px; scrollbar-width: none;
         }
         .categories-wrapper::-webkit-scrollbar { display: none; }
+        
         .category-btn {
-            display: inline-flex; align-items: center; gap: 8px; background: #f9fafb; color: var(--text-color);
-            padding: 8px 16px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem;
-            cursor: pointer; border: 1px solid #e5e7eb; flex-shrink: 0;
+            display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--text-muted);
+            padding: 7px 16px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 0.88rem;
+            cursor: pointer; border: 1px solid var(--border-color); flex-shrink: 0; transition: all 0.2s ease;
         }
-        .category-btn:hover, .category-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .category-btn:hover { color: var(--primary-color); border-color: var(--primary-color); background: #eff6ff; }
+        .category-btn.active {
+            background: var(--primary-gradient); color: white; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
 
+        /* قسم الهيرو البارز */
         .hero {
-            background: linear-gradient(rgba(37, 99, 235, 0.85), rgba(30, 64, 175, 0.9)), url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
-            color: white; text-align: center; padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(30, 58, 138, 0.92)), url('https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: white; text-align: center; padding: 55px 20px; position: relative;
         }
-        .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .hero h1 { font-size: 2.1rem; font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
+        .hero p { font-size: 1.05rem; opacity: 0.9; max-width: 650px; margin: 0 auto; font-weight: 600; }
 
-        .products-section { padding: 30px 4%; }
-        .section-title { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 20px; font-weight: 700; text-align: right; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        /* شريط الضمان والتوصيل المميز */
+        .trust-badges {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            background: white; padding: 16px 20px; margin: -25px auto 25px;
+            max-width: 900px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+            position: relative; z-index: 10; border: 1px solid var(--border-color);
+        }
+        .trust-item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 700; color: var(--text-main); }
+        .trust-icon { font-size: 1.3rem; background: #eff6ff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        /* شبكة المنتجات */
+        .products-section { padding: 10px 5% 50px; }
+        .section-title { font-size: 1.4rem; color: var(--text-main); margin-bottom: 22px; font-weight: 800; text-align: right; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
         
         .product-card {
-            background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            display: flex; flex-direction: column; border: 1px solid #e5e7eb; position: relative;
+            background: var(--card-bg); border-radius: var(--radius-lg); padding: 12px;
+            box-shadow: var(--shadow-md); display: flex; flex-direction: column;
+            border: 1px solid var(--border-color); position: relative; transition: all 0.3s ease;
         }
+        .product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #cbd5e1; }
 
         .product-img-wrapper {
-            position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; background: #f3f4f6;
+            position: relative; width: 100%; height: 180px; border-radius: var(--radius-md); overflow: hidden; background: #f1f5f9;
         }
         .product-img-wrapper img {
-            width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.3s;
+            width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.4s ease;
         }
-        .product-img-wrapper img:hover { transform: scale(1.03); }
+        .product-card:hover .product-img-wrapper img { transform: scale(1.06); }
 
-        /* الشارات الاحترافية المعدلة */
+        /* الشارات العصرية المعدلة */
         .discount-badge {
-            position: absolute; top: 6px; right: 6px; background-color: #ef4444;
-            color: white; font-size: 0.68rem; padding: 3px 7px; border-radius: 6px;
-            font-weight: bold; z-index: 2; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
-            letter-spacing: 0.3px;
+            position: absolute; top: 8px; right: 8px; background: var(--accent-gradient);
+            color: white; font-size: 0.68rem; padding: 4px 8px; border-radius: 20px;
+            font-weight: 800; z-index: 2; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
         }
 
         .img-count-badge {
-            position: absolute; bottom: 6px; left: 6px; background: rgba(0, 0, 0, 0.6); color: white;
-            font-size: 0.65rem; padding: 2px 7px; border-radius: 10px; font-weight: bold; backdrop-filter: blur(3px); z-index: 2;
+            position: absolute; bottom: 8px; left: 8px; background: rgba(15, 23, 42, 0.65); color: white;
+            font-size: 0.68rem; padding: 3px 8px; border-radius: 20px; font-weight: 700; backdrop-filter: blur(4px); z-index: 2;
         }
 
-        /* مؤشر حالة التوفر داخل تفاصيل المنتج */
+        /* حالة التوفر مع نبض حركي متوهج */
         .status-badge-inline {
-            display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem;
-            font-weight: 600; margin-top: 8px; margin-bottom: 2px;
+            display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem;
+            font-weight: 700; margin-top: 10px; margin-bottom: 2px;
         }
         .status-badge-inline.available { color: #059669; }
         .status-badge-inline.unavailable { color: #dc2626; }
         
         .status-dot {
-            width: 7px; height: 7px; border-radius: 50%; display: inline-block;
+            width: 8px; height: 8px; border-radius: 50%; display: inline-block; position: relative;
         }
-        .status-dot.available { background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
-        .status-dot.unavailable { background-color: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
+        .status-dot.available { background-color: #10b981; }
+        .status-dot.available::after {
+            content: ''; position: absolute; top:-2px; left:-2px; right:-2px; bottom:-2px;
+            border-radius: 50%; background: rgba(16, 185, 129, 0.4); animation: pulse 1.8s infinite;
+        }
+        .status-dot.unavailable { background-color: #ef4444; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.6); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
 
         .card-img-nav {
-            position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.85);
-            color: #111; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; z-index: 2;
+            position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9);
+            color: #111; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: all 0.2s; z-index: 2; opacity: 0.85;
         }
-        .card-img-nav:hover { background: white; transform: translateY(-50%) scale(1.1); }
+        .card-img-nav:hover { background: white; opacity: 1; transform: translateY(-50%) scale(1.1); }
         .card-img-nav.prev { right: 6px; }
         .card-img-nav.next { left: 6px; }
 
-        .product-title { font-size: 0.98rem; margin: 4px 0 6px; color: #111; font-weight: 700; line-height: 1.3; }
+        .product-title { font-size: 0.98rem; margin: 4px 0 6px; color: var(--text-main); font-weight: 700; line-height: 1.35; height: 2.7em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
         
-        .price-container { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-        .current-price { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; }
-        .old-price { text-decoration: line-through; color: #9ca3af; font-size: 0.85rem; }
+        .price-container { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+        .current-price { color: var(--primary-color); font-weight: 800; font-size: 1.15rem; }
+        .old-price { text-decoration: line-through; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; }
         
-        .quantity-box { display: flex; align-items: center; justify-content: space-between; background: #f3f4f6; border-radius: 8px; padding: 4px 8px; margin-bottom: 10px; }
-        .qty-btn { background: white; border: 1px solid #ddd; width: 26px; height: 26px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .product-qty { font-weight: bold; font-size: 0.95rem; width: 30px; text-align: center; }
+        .quantity-box { display: flex; align-items: center; justify-content: space-between; background: #f1f5f9; border-radius: 8px; padding: 4px 8px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .qty-btn { background: white; border: 1px solid var(--border-color); width: 26px; height: 26px; border-radius: 6px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .qty-btn:hover { background: #e2e8f0; }
+        .product-qty { font-weight: 800; font-size: 0.95rem; width: 30px; text-align: center; }
 
-        .btn-add-cart { background-color: var(--primary-color); color: white; padding: 9px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
-        .btn-add-cart:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .btn-add-cart {
+            background: var(--primary-gradient); color: white; padding: 10px; border: none;
+            border-radius: var(--radius-md); font-size: 0.92rem; font-weight: 700; cursor: pointer;
+            width: 100%; margin-top: auto; transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+        .btn-add-cart:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        .btn-add-cart:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
 
-        .btn-toggle-status { background-color: var(--warning-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; margin-top: 6px; width: 100%; }
-        .btn-delete-product { background-color: var(--danger-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; margin-top: 4px; width: 100%; }
+        .btn-toggle-status { background-color: var(--warning-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; margin-top: 6px; width: 100%; }
+        .btn-delete-product { background-color: var(--danger-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; margin-top: 4px; width: 100%; }
 
-        .contact-section { background: white; padding: 40px 20px; text-align: center; border-top: 1px solid #e5e7eb; margin-top: 40px; }
-        .contact-btn { display: inline-flex; align-items: center; gap: 8px; background-color: var(--whatsapp-color); color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.05rem; }
+        /* قسم التواصل السريع */
+        .contact-section { background: white; padding: 45px 20px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 40px; }
+        .contact-btn {
+            display: inline-flex; align-items: center; gap: 10px; background-color: var(--whatsapp-color);
+            color: white; padding: 13px 28px; border-radius: 30px; text-decoration: none; font-weight: 800;
+            font-size: 1.05rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: all 0.25s ease;
+        }
+        .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
 
-        .modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: white; width: 100%; max-width: 440px; padding: 22px; border-radius: 12px; text-align: right; max-height: 90vh; overflow-y: auto; }
-        .modal-content label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.88rem;}
-        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 9px 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Cairo'; font-size: 0.9rem; outline: none; }
-        .modal-buttons { display: flex; gap: 8px; }
-        .btn-primary-action { background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: bold; width: 100%; cursor: pointer; }
-        .btn-cancel-action { background-color: #f3f4f6; color: #4b5563; padding: 10px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
+        /* النوافذ المنبثقة والمعرض */
+        .modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: white; width: 100%; max-width: 440px; padding: 24px; border-radius: var(--radius-lg); text-align: right; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-hover); }
+        .modal-content label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.88rem; color: var(--text-main); }
+        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 10px 14px; margin-bottom: 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: 'Cairo'; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .modal-content input:focus, .modal-content select:focus, .modal-content textarea:focus { border-color: var(--primary-color); }
+        .modal-buttons { display: flex; gap: 10px; }
+        .btn-primary-action { background: var(--primary-gradient); color: white; padding: 11px; border: none; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 700; width: 100%; cursor: pointer; transition: opacity 0.2s; }
+        .btn-cancel-action { background-color: #f1f5f9; color: var(--text-muted); padding: 11px; border: none; border-radius: var(--radius-md); width: 100%; cursor: pointer; font-weight: 700; font-size: 0.95rem; }
 
         .gallery-modal-overlay {
             display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92); flex-direction: column; justify-content: space-between; align-items: center;
-            padding: 20px 10px; backdrop-filter: blur(5px);
+            background: rgba(15, 23, 42, 0.95); flex-direction: column; justify-content: space-between; align-items: center;
+            padding: 20px 10px; backdrop-filter: blur(8px);
         }
         .gallery-header { width: 100%; display: flex; justify-content: space-between; align-items: center; color: white; padding: 0 15px; }
-        .gallery-counter { font-size: 1rem; font-weight: bold; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 15px; }
-        .gallery-close { font-size: 1.8rem; cursor: pointer; color: white; font-weight: bold; }
+        .gallery-counter { font-size: 1rem; font-weight: 700; background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 20px; }
+        .gallery-close { font-size: 1.8rem; cursor: pointer; color: white; font-weight: 700; }
 
         .gallery-main-view { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; flex-grow: 1; max-height: 75vh; }
-        .gallery-main-view img { max-width: 92%; max-height: 70vh; border-radius: 10px; object-fit: contain; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .gallery-main-view img { max-width: 92%; max-height: 70vh; border-radius: var(--radius-md); object-fit: contain; box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
 
         .gallery-arrow {
             position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2);
-            color: white; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+            color: white; border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
             font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.3s;
         }
         .gallery-arrow:hover { background: rgba(255,255,255,0.4); }
@@ -193,30 +288,37 @@
 
         .gallery-thumbnails { display: flex; gap: 8px; overflow-x: auto; max-width: 90%; padding: 10px 0; scrollbar-width: none; }
         .gallery-thumbnails::-webkit-scrollbar { display: none; }
-        .gallery-thumb { width: 55px; height: 55px; border-radius: 6px; object-fit: cover; cursor: pointer; opacity: 0.5; border: 2px solid transparent; transition: 0.3s; flex-shrink: 0; }
+        .gallery-thumb { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; cursor: pointer; opacity: 0.5; border: 2px solid transparent; transition: 0.3s; flex-shrink: 0; }
         .gallery-thumb.active { opacity: 1; border-color: var(--primary-color); transform: scale(1.05); }
 
-        .toast-notification { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(100px); background-color: var(--success-color); color: white; padding: 10px 20px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 8px; z-index: 3500; opacity: 0; transition: 0.3s; font-size: 0.95rem; }
+        .toast-notification {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px); color: white; padding: 12px 24px;
+            border-radius: 30px; font-weight: 700; display: flex; align-items: center; gap: 10px; z-index: 3500;
+            opacity: 0; transition: all 0.3s ease; font-size: 0.95rem; box-shadow: var(--shadow-hover);
+        }
         .toast-notification.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
-        .cart-sidebar { position: fixed; top: 0; left: -380px; width: 100%; max-width: 330px; height: 100%; background: white; z-index: 1000; transition: 0.3s ease-in-out; display: flex; flex-direction: column; }
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(2px); z-index: 999; display: none; }
+        .cart-sidebar { position: fixed; top: 0; left: -380px; width: 100%; max-width: 350px; height: 100%; background: white; z-index: 1000; transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; box-shadow: var(--shadow-hover); }
         .cart-sidebar.active { left: 0; }
-        .cart-header { background: var(--primary-color); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header { background: var(--secondary-color); color: white; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; }
         .cart-items-container { padding: 15px; flex-grow: 1; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; padding: 10px 0; gap: 10px; }
-        .cart-footer { padding: 15px; border-top: 1px solid #e5e7eb; background: #f9fafb; }
-        .cart-total { font-size: 1.05rem; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .btn-checkout { background-color: var(--primary-color); color: white; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 12px 0; gap: 10px; }
+        .cart-footer { padding: 18px 20px; border-top: 1px solid var(--border-color); background: #f8fafc; }
+        .cart-total { font-size: 1.05rem; font-weight: 800; display: flex; justify-content: space-between; margin-bottom: 14px; color: var(--text-main); }
+        .btn-checkout { background: var(--primary-gradient); color: white; padding: 12px; border: none; border-radius: var(--radius-md); font-weight: 800; cursor: pointer; width: 100%; font-size: 1rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            header { padding: 10px 3%; }
-            .hero { padding: 35px 15px; }
+            header { padding: 10px 4%; }
+            .hero { padding: 40px 15px; }
             .hero h1 { font-size: 1.6rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .trust-badges { gap: 12px; padding: 12px; margin-top: -20px; }
+            .trust-item { font-size: 0.78rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .product-card { padding: 8px; }
-            .product-img-wrapper { height: 130px; }
+            .product-img-wrapper { height: 135px; }
         }
     </style>
 </head>
@@ -238,30 +340,51 @@
             </div>
         </div>
         <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث عما تريده في المتجر..." onkeyup="filterProducts()">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن المنتجات أو الفئات..." onkeyup="filterProducts()">
         </div>
     </header>
 
     <div class="categories-wrapper">
         <div class="category-btn active" onclick="filterByCategory('الكل', this)"><span class="icon">🏠</span> الكل</div>
-        <div class="category-btn" onclick="filterByCategory('ميكب', this)"><span class="icon">💄</span> ميكب وعناية بالبشرة</div>
+        <div class="category-btn" onclick="filterByCategory('ميكب', this)"><span class="icon">💄</span> ميكب وعناية</div>
         <div class="category-btn" onclick="filterByCategory('الكترونيات', this)"><span class="icon">💻</span> إلكترونيات</div>
         <div class="category-btn" onclick="filterByCategory('ملابس', this)"><span class="icon">👕</span> ملابس</div>
         <div class="category-btn" onclick="filterByCategory('أدوات منزلية', this)"><span class="icon">🍳</span> أدوات منزلية</div>
-        <div class="category-btn" onclick="filterByCategory('منوع', this)"><span class="icon">✨</span> منوع</div>
-        <div class="category-btn" onclick="filterByCategory('ألعاب', this)"><span class="icon">🧸</span> ألعاب منزلية</div>
+        <div class="category-btn" onclick="filterByCategory('منوع', this)"><span class="icon">✨</span> منوعات</div>
+        <div class="category-btn" onclick="filterByCategory('ألعاب', this)"><span class="icon">🧸</span> ألعاب</div>
         <div class="category-btn" onclick="filterByCategory('سيارة', this)"><span class="icon">🚗</span> أدوات سيارة</div>
         <div class="category-btn" onclick="filterByCategory('إنارة', this)"><span class="icon">💡</span> إنارة وإضاءة</div>
         <div class="category-btn" onclick="filterByCategory('رياضية', this)"><span class="icon">⚽</span> أدوات رياضية</div>
         <div class="category-btn" onclick="filterByCategory('كهربائية', this)"><span class="icon">🔌</span> أجهزة كهربائية</div>
     </div>
 
+    <section class="hero">
+        <h1>تسوق أفضل المنتجات بأعلى جودة</h1>
+        <p>عروض حصرية وأسعار تنافسية مع خدمة توصيل سريعة لجميع محافظات العراق.</p>
+    </section>
+
+    <!-- شريط ضمان المتجر -->
+    <div class="trust-badges">
+        <div class="trust-item">
+            <div class="trust-icon">🚚</div>
+            <span>توصيل سريع لجميع المحافظات</span>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">🛡️</div>
+            <span>ضمان جودة المنتج</span>
+        </div>
+        <div class="trust-item">
+            <div class="trust-icon">💬</div>
+            <span>دعم متواصل عبر الواتساب</span>
+        </div>
+    </div>
+
     <!-- نافذة إضافة منتج -->
     <div class="modal-overlay" id="addProductModal">
         <div class="modal-content">
-            <h3>إضافة منتج جديد ➕</h3>
+            <h3 style="margin-top: 0; color: var(--primary-color);">إضافة منتج جديد ➕</h3>
             <label>اسم المنتج:</label>
-            <input type="text" id="newProdTitle" placeholder="مثال: ساعة ذكية">
+            <input type="text" id="newProdTitle" placeholder="مثال: ساعة ذكية مقاومة للماء">
 
             <label>الفئة:</label>
             <select id="newProdCategory">
@@ -269,7 +392,7 @@
                 <option value="ميكب">ميكب وعناية بالبشرة</option>
                 <option value="ملابس">ملابس</option>
                 <option value="أدوات منزلية">أدوات منزلية</option>
-                <option value="منوع">منوع</option>
+                <option value="منوع">منوعات</option>
                 <option value="ألعاب">ألعاب منزلية</option>
                 <option value="سيارة">أدوات سيارة</option>
                 <option value="إنارة">إنارة وإضاءة</option>
@@ -283,7 +406,7 @@
                 <option value="false">🔴 غير متوفر حالياً</option>
             </select>
 
-            <label>السعر الحالي بعد الخصم (بالدينار العراقي):</label>
+            <label>السعر الحالي (دينار عراقي):</label>
             <input type="number" id="newProdPrice" placeholder="مثال: 15000">
 
             <label>السعر القديم قبل الخصم (اختياري):</label>
@@ -292,11 +415,11 @@
             <label>روابط الصور (رابط في كل سطر):</label>
             <textarea id="newProdImgUrl" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
 
-            <label>أو ارفع عدة صور من جهازك (سيتم ضغطها تلقائياً):</label>
+            <label>أو ارفع عدة صور من جهازك:</label>
             <input type="file" id="newProdImgFile" accept="image/*" multiple>
 
             <div class="modal-buttons" style="margin-top: 10px;">
-                <button class="btn-primary-action" id="btnSaveProd" onclick="saveNewProduct()">حفظ ونشر لكل الزبائن</button>
+                <button class="btn-primary-action" id="btnSaveProd" onclick="saveNewProduct()">حفظ ونشر المنتج</button>
                 <button class="btn-cancel-action" onclick="closeAddProductModal()">إلغاء</button>
             </div>
         </div>
@@ -318,34 +441,36 @@
         <div class="gallery-thumbnails" id="galleryThumbnails"></div>
     </div>
 
+    <!-- نافذة الدفع والتأكيد -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
-            <h3>إتمام الطلب 📝</h3>
+            <h3 style="margin-top:0; color: var(--primary-color);">إتمام الطلب 📝</h3>
             <label>الاسم الكامل:</label>
-            <input type="text" id="customerName" placeholder="اكتب اسمك هنا">
+            <input type="text" id="customerName" placeholder="اكتب اسمك الثلاثي">
             <label>رقم الهاتف:</label>
             <input type="tel" id="customerPhone" placeholder="07XXXXXXXXX">
             <label>العنوان بالتفصيل:</label>
-            <textarea id="customerAddress" rows="3" placeholder="المحافظة، المنطقة، نقطة دالة..."></textarea>
+            <textarea id="customerAddress" rows="3" placeholder="المحافظة، المنطقة، أقرب نقطة دالة..."></textarea>
             <div class="modal-buttons" style="flex-direction: column;">
-                <button class="btn-primary-action" style="background-color: var(--whatsapp-color);" onclick="sendWhatsAppOrder()">إرسال الطلب عبر واتساب 💬</button>
+                <button class="btn-primary-action" style="background: var(--whatsapp-color);" onclick="sendWhatsAppOrder()">إرسال الطلب عبر واتساب 💬</button>
                 <button class="btn-cancel-action" onclick="closeCheckoutModal()">إلغاء والرجوع للسلة</button>
             </div>
         </div>
     </div>
 
     <div id="toast" class="toast-notification">
-        <span>✔️</span> <span id="toast-message">تمت الإضافة بنجاح</span>
+        <span>✨</span> <span id="toast-message">تمت الإضافة بنجاح</span>
     </div>
 
+    <!-- سلة المشتريات الجانبية -->
     <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h3 style="margin:0; font-size: 1.1rem;">سلة المشتريات 🛒</h3>
-            <span style="cursor:pointer;" onclick="closeCart()">✖</span>
+            <h3 style="margin:0; font-size: 1.1rem; font-weight: 800;">سلة المشتريات 🛒</h3>
+            <span style="cursor:pointer; font-size: 1.2rem;" onclick="closeCart()">✖</span>
         </div>
         <div class="cart-items-container" id="cart-items">
-            <p style="text-align: center; color: #666; margin-top: 50px;">السلة فارغة حالياً</p>
+            <p style="text-align: center; color: #94a3b8; margin-top: 50px; font-weight: 700;">السلة فارغة حالياً</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
@@ -356,20 +481,16 @@
         </div>
     </div>
 
-    <section class="hero">
-        <h1>تسوق أفضل المنتجات بأعلى جودة وأفضل الأسعار في العراق.</h1>
-    </section>
-
     <section id="products" class="products-section">
         <h2 class="section-title">منتجاتنا المميزة</h2>
         <div class="products-grid" id="productsGrid">
-            <p style="text-align: center; grid-column: 1/-1;">جاري تحميل المنتجات...</p>
+            <p style="text-align: center; grid-column: 1/-1; color: #64748b; font-weight: 700;">جاري تحميل المنتجات...</p>
         </div>
     </section>
 
     <section id="contact" class="contact-section">
-        <h2>تواصل معنا</h2>
-        <p>هل لديك استفسار أو تريد مساعدة في طلبك؟ نحن هنا لخدمتك دائماً عبر الواتساب.</p>
+        <h2 style="font-weight: 800; margin-bottom: 8px;">تواصل معنا مباشرة</h2>
+        <p style="color: var(--text-muted); margin-bottom: 22px; font-weight: 600;">هل لديك أي استفسار أو تريد مساعدة؟ نحن هنا لخدمتك دائماً عبر الواتساب.</p>
         <a href="https://wa.me/9647749270905" target="_blank" class="contact-btn">💬 تواصل عبر واتساب مباشرة</a>
     </section>
 
@@ -457,7 +578,7 @@
             grid.innerHTML = '';
 
             if (productsList.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">لا توجد منتجات حالياً.</p>';
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #64748b; font-weight:700;">لا توجد منتجات حالياً.</p>';
                 return;
             }
 
@@ -508,7 +629,7 @@
                         <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
                     </div>
                     <button class="btn-add-cart" ${!isAvailable ? 'disabled' : ''} onclick="addToCart(this, '${p.title}', ${p.price})">
-                        ${isAvailable ? 'أضف للسلة' : 'غير متوفر'}
+                        ${isAvailable ? 'أضف للسلة 🛒' : 'غير متوفر'}
                     </button>
                     ${isAdmin ? `
                         <button class="btn-toggle-status" onclick="toggleProductAvailability('${p.id}', ${isAvailable})">
@@ -577,7 +698,7 @@
                 return;
             }
 
-            btnSave.innerText = "جاري الضغط والحفظ...";
+            btnSave.innerText = "جاري الحفظ والنشر...";
             btnSave.disabled = true;
 
             try {
@@ -594,7 +715,7 @@
                             const compressedBase64 = await compressImage(imgFiles[i], 800, 0.7);
                             imagesArray.push(compressedBase64);
                         } catch (err) {
-                            console.error("فشل ضغط أحد الصور:", err);
+                            console.error("فشل ضغط الصورة:", err);
                         }
                     }
                 }
@@ -614,7 +735,7 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                btnSave.innerText = "حفظ ونشر لكل الزبائن";
+                btnSave.innerText = "حفظ ونشر المنتج";
                 btnSave.disabled = false;
                 closeAddProductModal();
 
@@ -624,10 +745,10 @@
                 document.getElementById('newProdImgUrl').value = '';
                 document.getElementById('newProdImgFile').value = '';
 
-                alert("تم ضغط ونشر المنتج بنجاح! سيظهر لجميع الزبائن فوراً.");
+                showToast("تم إضافة المنتج بنجاح!", 1);
 
             } catch (error) {
-                btnSave.innerText = "حفظ ونشر لكل الزبائن";
+                btnSave.innerText = "حفظ ونشر المنتج";
                 btnSave.disabled = false;
                 alert("حدث خطأ أثناء الحفظ: " + error.message);
             }
@@ -637,7 +758,7 @@
             db.collection("products").doc(docId).update({
                 available: !currentStatus
             }).then(() => {
-                showToast("تحديث الحالة", 1);
+                showToast("تم تحديث حالة المنتج", 1);
             }).catch(err => alert("خطأ في تحديث الحالة: " + err.message));
         }
 
@@ -736,12 +857,12 @@
             });
         }
 
-        function showToast(title, qty) {
+        function showToast(msg, qty) {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-message').innerText = `تم التحديث بنجاح`;
+            document.getElementById('toast-message').innerText = msg || `تم التحديث بنجاح`;
             toast.classList.add('show');
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2200);
         }
 
         function openCart() {
@@ -766,7 +887,7 @@
             }
 
             updateCartUI();
-            showToast(title, quantity);
+            showToast(`تمت إضافة ${quantity} قطعة للسلة`, quantity);
             qtySpan.innerText = 1;
         }
 
@@ -790,7 +911,7 @@
             const totalElem = document.getElementById('total-price');
             
             if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #666; margin-top: 50px;">السلة فارغة حالياً</p>';
+                container.innerHTML = '<p style="text-align: center; color: #94a3b8; margin-top: 50px; font-weight:700;">السلة فارغة حالياً</p>';
                 totalElem.innerText = "0 د.ع";
                 return;
             }
@@ -803,14 +924,14 @@
                 html += `
                     <div class="cart-item">
                         <div>
-                            <h4 style="margin:0 0 3px 0;">${item.title}</h4>
-                            <p style="margin:0; color:var(--primary-color); font-weight:bold;">${item.price.toLocaleString()} د.ع × ${item.quantity}</p>
+                            <h4 style="margin:0 0 4px 0; font-size:0.92rem;">${item.title}</h4>
+                            <p style="margin:0; color:var(--primary-color); font-weight:800; font-size:0.88rem;">${item.price.toLocaleString()} د.ع × ${item.quantity}</p>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
                             <div class="quantity-box" style="margin:0; padding:2px 4px;">
-                                <button class="qty-btn" style="width:20px;height:20px;" onclick="updateItemQuantity(${index}, -1)">-</button>
-                                <span style="font-size:0.85rem; padding:0 5px; font-weight:bold;">${item.quantity}</span>
-                                <button class="qty-btn" style="width:20px;height:20px;" onclick="updateItemQuantity(${index}, 1)">+</button>
+                                <button class="qty-btn" style="width:22px;height:22px;" onclick="updateItemQuantity(${index}, -1)">-</button>
+                                <span style="font-size:0.85rem; padding:0 6px; font-weight:800;">${item.quantity}</span>
+                                <button class="qty-btn" style="width:22px;height:22px;" onclick="updateItemQuantity(${index}, 1)">+</button>
                             </div>
                             <button class="btn-delete-product" style="margin:0; width:auto; padding:3px 8px;" onclick="removeFromCart(${index})">حذف</button>
                         </div>
