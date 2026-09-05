@@ -106,24 +106,32 @@
         }
         .product-img-wrapper img:hover { transform: scale(1.03); }
 
-        /* شارات الحالة والخصم والصور */
-        .status-badge {
-            position: absolute; top: 8px; right: 8px; font-size: 0.72rem; padding: 3px 8px;
-            border-radius: 12px; font-weight: bold; color: white; backdrop-filter: blur(4px); z-index: 2;
-        }
-        .status-badge.available { background: rgba(16, 185, 129, 0.9); }
-        .status-badge.unavailable { background: rgba(239, 68, 68, 0.9); }
-
+        /* الشارات الاحترافية المعدلة */
         .discount-badge {
-            position: absolute; top: 32px; right: 8px; background-color: var(--danger-color);
-            color: white; font-size: 0.72rem; padding: 3px 8px; border-radius: 12px;
-            font-weight: bold; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            position: absolute; top: 6px; right: 6px; background-color: #ef4444;
+            color: white; font-size: 0.68rem; padding: 3px 7px; border-radius: 6px;
+            font-weight: bold; z-index: 2; box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+            letter-spacing: 0.3px;
         }
 
         .img-count-badge {
-            position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); color: white;
-            font-size: 0.72rem; padding: 2px 8px; border-radius: 12px; font-weight: bold; backdrop-filter: blur(4px); z-index: 2;
+            position: absolute; bottom: 6px; left: 6px; background: rgba(0, 0, 0, 0.6); color: white;
+            font-size: 0.65rem; padding: 2px 7px; border-radius: 10px; font-weight: bold; backdrop-filter: blur(3px); z-index: 2;
         }
+
+        /* مؤشر حالة التوفر داخل تفاصيل المنتج */
+        .status-badge-inline {
+            display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem;
+            font-weight: 600; margin-top: 8px; margin-bottom: 2px;
+        }
+        .status-badge-inline.available { color: #059669; }
+        .status-badge-inline.unavailable { color: #dc2626; }
+        
+        .status-dot {
+            width: 7px; height: 7px; border-radius: 50%; display: inline-block;
+        }
+        .status-dot.available { background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
+        .status-dot.unavailable { background-color: #ef4444; box-shadow: 0 0 6px rgba(239, 68, 68, 0.5); }
 
         .card-img-nav {
             position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.85);
@@ -135,9 +143,8 @@
         .card-img-nav.prev { right: 6px; }
         .card-img-nav.next { left: 6px; }
 
-        .product-title { font-size: 1rem; margin: 10px 0 5px; color: #111; font-weight: 700; }
+        .product-title { font-size: 0.98rem; margin: 4px 0 6px; color: #111; font-weight: 700; line-height: 1.3; }
         
-        /* تنسيقات عرض الأسعار والخصم */
         .price-container { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
         .current-price { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; }
         .old-price { text-decoration: line-through; color: #9ca3af; font-size: 0.85rem; }
@@ -149,7 +156,6 @@
         .btn-add-cart { background-color: var(--primary-color); color: white; padding: 9px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: auto; }
         .btn-add-cart:disabled { background-color: #9ca3af; cursor: not-allowed; }
 
-        /* أزرار الإدارة */
         .btn-toggle-status { background-color: var(--warning-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; margin-top: 6px; width: 100%; }
         .btn-delete-product { background-color: var(--danger-color); color: white; border: none; padding: 6px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; margin-top: 4px; width: 100%; }
 
@@ -164,7 +170,6 @@
         .btn-primary-action { background-color: var(--primary-color); color: white; padding: 10px; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: bold; width: 100%; cursor: pointer; }
         .btn-cancel-action { background-color: #f3f4f6; color: #4b5563; padding: 10px; border: none; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; font-size: 0.95rem; }
 
-        /* معرض الصور السينمائي */
         .gallery-modal-overlay {
             display: none; position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.92); flex-direction: column; justify-content: space-between; align-items: center;
@@ -287,7 +292,7 @@
             <label>روابط الصور (رابط في كل سطر):</label>
             <textarea id="newProdImgUrl" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
 
-            <label>أو ارفع عدة صور من جهازك:</label>
+            <label>أو ارفع عدة صور من جهازك (سيتم ضغطها تلقائياً):</label>
             <input type="file" id="newProdImgFile" accept="image/*" multiple>
 
             <div class="modal-buttons" style="margin-top: 10px;">
@@ -370,9 +375,8 @@
 
     <script>
         const phoneNumber = "9647749270905";
-        const ADMIN_PIN = "113322"; // كلمة السر للوحة التحكم
+        const ADMIN_PIN = "113322";
 
-        // مفاتيح Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCZHcH2sL2gZ05OVVtXt1Y4pMP-Srgd8wU",
             authDomain: "zona-store.firebaseapp.com",
@@ -383,7 +387,6 @@
             measurementId: "G-4BPRPE6TZJ"
         };
 
-        // تهيئة Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
@@ -397,7 +400,38 @@
         let currentGalleryImages = [];
         let currentGalleryIndex = 0;
 
-        // الاستماع المباشر للتغييرات
+        function compressImage(file, maxWidth = 800, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                        resolve(compressedBase64);
+                    };
+                    img.onerror = (err) => reject(err);
+                };
+                reader.onerror = (err) => reject(err);
+            });
+        }
+
         function listenToProducts() {
             db.collection("products").onSnapshot((snapshot) => {
                 productsList = [];
@@ -432,7 +466,6 @@
                 const hasMultiple = images.length > 1;
                 const isAvailable = p.available !== false;
                 
-                // حساب الخصم
                 const hasDiscount = p.oldPrice && p.oldPrice > p.price;
                 const discountPercent = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
 
@@ -448,17 +481,20 @@
 
                 card.innerHTML = `
                     <div class="product-img-wrapper">
-                        <span class="status-badge ${isAvailable ? 'available' : 'unavailable'}">
-                            ${isAvailable ? '🟢 متوفر' : '🔴 غير متوفر'}
-                        </span>
                         ${hasDiscount ? `<span class="discount-badge">خصم ${discountPercent}%</span>` : ''}
-                        ${hasMultiple ? `<span class="img-count-badge">📷 ${images.length} صور</span>` : ''}
+                        ${hasMultiple ? `<span class="img-count-badge">📷 ${images.length}</span>` : ''}
                         <img id="img-card-${p.id}" src="${images[activeImgIndex]}" alt="${p.title}" onclick="openGallery('${p.id}', ${activeImgIndex})">
                         ${hasMultiple ? `
                             <button class="card-img-nav prev" onclick="event.stopPropagation(); cycleCardImg('${p.id}', -1)">❮</button>
                             <button class="card-img-nav next" onclick="event.stopPropagation(); cycleCardImg('${p.id}', 1)">❯</button>
                         ` : ''}
                     </div>
+
+                    <div class="status-badge-inline ${isAvailable ? 'available' : 'unavailable'}">
+                        <span class="status-dot ${isAvailable ? 'available' : 'unavailable'}"></span>
+                        ${isAvailable ? 'متوفر بالمخزون' : 'غير متوفر حالياً'}
+                    </div>
+
                     <h3 class="product-title">${p.title}</h3>
                     
                     <div class="price-container">
@@ -472,7 +508,7 @@
                         <button class="qty-btn" onclick="adjustCardQty(this, 1)">+</button>
                     </div>
                     <button class="btn-add-cart" ${!isAvailable ? 'disabled' : ''} onclick="addToCart(this, '${p.title}', ${p.price})">
-                        ${isAvailable ? 'أضف للسلة' : 'غير متوفر حالياً'}
+                        ${isAvailable ? 'أضف للسلة' : 'غير متوفر'}
                     </button>
                     ${isAdmin ? `
                         <button class="btn-toggle-status" onclick="toggleProductAvailability('${p.id}', ${isAvailable})">
@@ -541,7 +577,7 @@
                 return;
             }
 
-            btnSave.innerText = "جاري الحفظ والرفع...";
+            btnSave.innerText = "جاري الضغط والحفظ...";
             btnSave.disabled = true;
 
             try {
@@ -553,15 +589,14 @@
                 }
 
                 if (imgFiles && imgFiles.length > 0) {
-                    const readFile = file => new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = e => resolve(e.target.result);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
-                    });
-
-                    const uploadedFiles = await Promise.all(Array.from(imgFiles).map(readFile));
-                    imagesArray.push(...uploadedFiles);
+                    for (let i = 0; i < imgFiles.length; i++) {
+                        try {
+                            const compressedBase64 = await compressImage(imgFiles[i], 800, 0.7);
+                            imagesArray.push(compressedBase64);
+                        } catch (err) {
+                            console.error("فشل ضغط أحد الصور:", err);
+                        }
+                    }
                 }
 
                 if (imagesArray.length === 0) {
@@ -589,7 +624,7 @@
                 document.getElementById('newProdImgUrl').value = '';
                 document.getElementById('newProdImgFile').value = '';
 
-                alert("تم نشر المنتج بنجاح وظهر لجميع الزبائن الآن!");
+                alert("تم ضغط ونشر المنتج بنجاح! سيظهر لجميع الزبائن فوراً.");
 
             } catch (error) {
                 btnSave.innerText = "حفظ ونشر لكل الزبائن";
@@ -598,7 +633,6 @@
             }
         }
 
-        // تغيير حالة المنتج بين متوفر وغير متوفر
         function toggleProductAvailability(docId, currentStatus) {
             db.collection("products").doc(docId).update({
                 available: !currentStatus
@@ -607,7 +641,6 @@
             }).catch(err => alert("خطأ في تحديث الحالة: " + err.message));
         }
 
-        // حذف المنتج نهائياً
         function deleteProduct(docId) {
             if (confirm("هل أنت تأكد من رغبتك في حذف هذا المنتج نهائياً من المتجر؟")) {
                 db.collection("products").doc(docId).delete().then(() => {
@@ -616,7 +649,6 @@
             }
         }
 
-        // تحكم معرض الصور
         function openGallery(docId, startIndex = 0) {
             const p = productsList.find(item => item.id === docId);
             if (!p) return;
