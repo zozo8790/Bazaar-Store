@@ -106,13 +106,19 @@
         }
         .product-img-wrapper img:hover { transform: scale(1.03); }
 
-        /* شارات الحالة وعدد الصور */
+        /* شارات الحالة والخصم والصور */
         .status-badge {
             position: absolute; top: 8px; right: 8px; font-size: 0.72rem; padding: 3px 8px;
             border-radius: 12px; font-weight: bold; color: white; backdrop-filter: blur(4px); z-index: 2;
         }
         .status-badge.available { background: rgba(16, 185, 129, 0.9); }
         .status-badge.unavailable { background: rgba(239, 68, 68, 0.9); }
+
+        .discount-badge {
+            position: absolute; top: 32px; right: 8px; background-color: var(--danger-color);
+            color: white; font-size: 0.72rem; padding: 3px 8px; border-radius: 12px;
+            font-weight: bold; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
 
         .img-count-badge {
             position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); color: white;
@@ -130,7 +136,11 @@
         .card-img-nav.next { left: 6px; }
 
         .product-title { font-size: 1rem; margin: 10px 0 5px; color: #111; font-weight: 700; }
-        .product-price-display { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
+        
+        /* تنسيقات عرض الأسعار والخصم */
+        .price-container { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .current-price { color: var(--primary-color); font-weight: bold; font-size: 1.1rem; }
+        .old-price { text-decoration: line-through; color: #9ca3af; font-size: 0.85rem; }
         
         .quantity-box { display: flex; align-items: center; justify-content: space-between; background: #f3f4f6; border-radius: 8px; padding: 4px 8px; margin-bottom: 10px; }
         .qty-btn { background: white; border: 1px solid #ddd; width: 26px; height: 26px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -268,8 +278,11 @@
                 <option value="false">🔴 غير متوفر حالياً</option>
             </select>
 
-            <label>السعر (بالدينار العراقي):</label>
+            <label>السعر الحالي بعد الخصم (بالدينار العراقي):</label>
             <input type="number" id="newProdPrice" placeholder="مثال: 15000">
+
+            <label>السعر القديم قبل الخصم (اختياري):</label>
+            <input type="number" id="newProdOldPrice" placeholder="مثال: 20000 (اتركه فارغاً إذا لا يوجد خصم)">
 
             <label>روابط الصور (رابط في كل سطر):</label>
             <textarea id="newProdImgUrl" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
@@ -417,7 +430,11 @@
             productsList.forEach(p => {
                 const images = getProductImages(p);
                 const hasMultiple = images.length > 1;
-                const isAvailable = p.available !== false; // افتراضياً متوفر إذا لم يحدد
+                const isAvailable = p.available !== false;
+                
+                // حساب الخصم
+                const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+                const discountPercent = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
 
                 if (cardImgIndices[p.id] === undefined) {
                     cardImgIndices[p.id] = 0;
@@ -434,6 +451,7 @@
                         <span class="status-badge ${isAvailable ? 'available' : 'unavailable'}">
                             ${isAvailable ? '🟢 متوفر' : '🔴 غير متوفر'}
                         </span>
+                        ${hasDiscount ? `<span class="discount-badge">خصم ${discountPercent}%</span>` : ''}
                         ${hasMultiple ? `<span class="img-count-badge">📷 ${images.length} صور</span>` : ''}
                         <img id="img-card-${p.id}" src="${images[activeImgIndex]}" alt="${p.title}" onclick="openGallery('${p.id}', ${activeImgIndex})">
                         ${hasMultiple ? `
@@ -442,7 +460,12 @@
                         ` : ''}
                     </div>
                     <h3 class="product-title">${p.title}</h3>
-                    <div class="product-price-display">${Number(p.price).toLocaleString()} د.ع</div>
+                    
+                    <div class="price-container">
+                        <span class="current-price">${Number(p.price).toLocaleString()} د.ع</span>
+                        ${hasDiscount ? `<span class="old-price">${Number(p.oldPrice).toLocaleString()} د.ع</span>` : ''}
+                    </div>
+
                     <div class="quantity-box">
                         <button class="qty-btn" onclick="adjustCardQty(this, -1)">-</button>
                         <span class="product-qty">1</span>
@@ -505,6 +528,10 @@
             const category = document.getElementById('newProdCategory').value;
             const isAvailable = document.getElementById('newProdStatus').value === 'true';
             const price = parseFloat(document.getElementById('newProdPrice').value);
+            
+            const oldPriceVal = document.getElementById('newProdOldPrice').value;
+            const oldPrice = oldPriceVal ? parseFloat(oldPriceVal) : null;
+
             const imgUrlsText = document.getElementById('newProdImgUrl').value.trim();
             const imgFiles = document.getElementById('newProdImgFile').files;
             const btnSave = document.getElementById('btnSaveProd');
@@ -545,6 +572,7 @@
                     title: title,
                     category: category,
                     price: price,
+                    oldPrice: oldPrice,
                     available: isAvailable,
                     img: imagesArray[0],
                     images: imagesArray,
@@ -557,6 +585,7 @@
 
                 document.getElementById('newProdTitle').value = '';
                 document.getElementById('newProdPrice').value = '';
+                document.getElementById('newProdOldPrice').value = '';
                 document.getElementById('newProdImgUrl').value = '';
                 document.getElementById('newProdImgFile').value = '';
 
