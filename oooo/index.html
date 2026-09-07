@@ -1105,15 +1105,17 @@
                         <th>الطلب</th>
                         <th>العميل</th>
                         <th>الهاتف</th>
+                        <th>المنتجات والكمية</th>
                         <th>المجموع</th>
                         <th>الحالة</th>
                         <th>التاريخ</th>
+                        <th>إجراء</th>
                     </tr>
                 </thead>
 
                 <tbody id="ordersBody">
                     <tr>
-                        <td colspan="6">جاري تحميل الطلبات...</td>
+                        <td colspan="8">جاري تحميل الطلبات...</td>
                     </tr>
                 </tbody>
 
@@ -3127,7 +3129,7 @@
 
             body.innerHTML =
                 `<tr>
-                    <td colspan="6">
+                    <td colspan="8">
                         لا توجد طلبات حالياً.
                     </td>
                  </tr>`;
@@ -3177,6 +3179,19 @@
                 </td>
 
                 <td>
+                    ${(order.items || []).length
+                        ? (order.items || []).map(item => `
+                            <div style="margin-bottom:5px">
+                                <strong>${escapeHTML(item.title || "منتج")}</strong>
+                                <span style="color:var(--primary);font-weight:800">
+                                    × ${Number(item.quantity || 0)}
+                                </span>
+                            </div>
+                        `).join("")
+                        : "لا توجد منتجات"}
+                </td>
+
+                <td>
                     <strong>
                         ${Number(order.total || 0).toLocaleString()}
                     </strong>
@@ -3222,11 +3237,61 @@
                     ${date}
                 </td>
 
+                <td>
+                    <button
+                        class="delete-btn"
+                        onclick="deleteOrder('${order.id}')"
+                        style="padding:6px 10px">
+                        🗑️ حذف
+                    </button>
+                </td>
+
             `;
 
             body.appendChild(row);
 
         });
+
+    }
+
+    async function deleteOrder(id) {
+
+        if (!isAdmin) return;
+
+        const order =
+            orders.find(x => x.id === id);
+
+        const customerName =
+            order && order.customer
+            ? order.customer.name || ""
+            : "";
+
+        if (
+            !confirm(
+                `هل تريد حذف الطلب ${id.slice(0,8)}${customerName ? ` للعميل "${customerName}"` : ""} نهائياً؟`
+            )
+        ) {
+            return;
+        }
+
+        try {
+
+            await db
+                .collection("orders")
+                .doc(id)
+                .delete();
+
+            showToast("تم حذف الطلب");
+
+        } catch(error) {
+
+            console.error(error);
+
+            showToast(
+                "تعذر حذف الطلب: " + error.message
+            );
+
+        }
 
     }
 
