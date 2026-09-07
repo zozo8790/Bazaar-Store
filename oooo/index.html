@@ -1454,7 +1454,7 @@
     let currentUser = null;
     let isAdmin = false;
 
-    let productLimit = 60;
+    let productLimit = 12;
     let lastProductDoc = null;
     let hasMoreProducts = true;
 
@@ -1806,7 +1806,7 @@
                         id="product-img-${product.id}"
                         src="${escapeHTML(images[index])}"
                         alt="${escapeHTML(product.title)}"
-                        loading="lazy"
+                        loading="lazy" decoding="async"
                         onclick="openGallery('${product.id}',${index})">
 
                     ${
