@@ -1149,11 +1149,31 @@
             placeholder="admin@example.com">
 
         <label>كلمة المرور</label>
-        <input
-            id="adminPasswordInput"
-            type="password"
-            autocomplete="current-password"
-            placeholder="••••••••">
+        <div style="position:relative">
+            <input
+                id="adminPasswordInput"
+                type="password"
+                autocomplete="current-password"
+                placeholder="••••••••"
+                onkeydown="if(event.key==='Enter') loginAdmin()"
+                style="padding-left:52px">
+            <button
+                type="button"
+                id="toggleAdminPassword"
+                onclick="toggleAdminPasswordVisibility()"
+                aria-label="إظهار كلمة المرور"
+                title="إظهار/إخفاء كلمة المرور"
+                style="position:absolute;left:6px;top:50%;transform:translateY(-50%);border:0;background:#f1f5f9;border-radius:8px;width:40px;height:34px;font-size:1rem">
+                👁️
+            </button>
+        </div>
+
+        <button
+            type="button"
+            onclick="forgotAdminPassword()"
+            style="display:block;margin:10px 0 0 auto;border:0;background:none;color:var(--primary);font-weight:800;font-size:.78rem;padding:4px 0">
+            🔑 نسيت كلمة المرور؟
+        </button>
 
         <div class="modal-buttons">
 
@@ -1393,7 +1413,7 @@
     ============================================================ */
 
     const firebaseConfig = {
-        apiKey: "AIzaSyCZHcH2sL2gZ05OVVtXtY1pMP-Srgd8wU",
+        apiKey: "AIzaSyCZHcH2sL2gZ05OVVtXtY4pMP-Srgd8wU",
         authDomain: "zona-store.firebaseapp.com",
         projectId: "zona-store",
         storageBucket: "zona-store.firebasestorage.app",
@@ -1464,6 +1484,7 @@
             isAdmin = false;
 
             document.body.classList.remove("admin-mode");
+            document.getElementById("adminEmail").textContent = "";
 
             if (orderUnsubscribe) {
                 orderUnsubscribe();
@@ -1472,27 +1493,38 @@
 
             if (user) {
 
-                const adminDoc = await db
-                    .collection("admins")
-                    .doc(user.uid)
-                    .get();
+                try {
 
-                if (adminDoc.exists && adminDoc.data().active !== false) {
+                    const adminDoc = await db
+                        .collection("admins")
+                        .doc(user.uid)
+                        .get();
 
-                    isAdmin = true;
+                    if (adminDoc.exists && adminDoc.data().active !== false) {
 
-                    document.body.classList.add("admin-mode");
+                        isAdmin = true;
 
-                    document.getElementById("adminEmail").textContent =
-                        user.email || "";
+                        document.body.classList.add("admin-mode");
+                        document.getElementById("adminEmail").textContent =
+                            user.email || "";
 
-                    subscribeOrders();
+                        subscribeOrders();
+                        requestNotificationPermission();
 
-                    requestNotificationPermission();
+                    } else {
 
-                } else {
+                        await auth.signOut();
+                        currentUser = null;
+                        showToast("هذا الحساب ليس مسؤولاً ❌");
 
+                    }
+
+                } catch(error) {
+
+                    console.error("Admin verification error:", error);
                     await auth.signOut();
+                    currentUser = null;
+                    showToast("تعذر التحقق من صلاحيات الإدارة");
 
                 }
 
@@ -2408,19 +2440,17 @@
             document
                 .getElementById("adminEmailInput")
                 .value
-                .trim();
+                .trim()
+                .toLowerCase();
 
-        const password =
-            document
-                .getElementById("adminPasswordInput")
-                .value;
+        const passwordInput =
+            document.getElementById("adminPasswordInput");
+
+        const password = passwordInput.value;
 
         if (!email || !password) {
-
-            showToast("أدخل البريد وكلمة المرور");
-
+            showToast("أدخل البريد الإلكتروني وكلمة المرور");
             return;
-
         }
 
         try {
@@ -2431,41 +2461,103 @@
                     password
                 );
 
+            // التحقق الإجباري: يجب أن يكون UID موجوداً داخل admins
+            // وألا يكون الحساب معطلاً (active !== false).
             const adminDoc =
                 await db
                     .collection("admins")
                     .doc(credential.user.uid)
                     .get();
 
-            if (
-                !adminDoc.exists ||
-                adminDoc.data().active === false
-            ) {
+            if (!adminDoc.exists || adminDoc.data().active === false) {
 
                 await auth.signOut();
+                currentUser = null;
+                isAdmin = false;
+                document.body.classList.remove("admin-mode");
 
-                showToast("هذا الحساب ليس مسؤولاً");
-
+                showToast("هذا الحساب ليس مسؤولاً ❌");
                 return;
-
             }
 
-            closeModal("loginModal");
+            currentUser = credential.user;
+            isAdmin = true;
+            document.body.classList.add("admin-mode");
+            document.getElementById("adminEmail").textContent =
+                credential.user.email || email;
 
-            showToast("تم تسجيل الدخول بنجاح 🔐");
+            closeModal("loginModal");
+            passwordInput.value = "";
+
+            showToast("تم تسجيل الدخول إلى الإدارة بنجاح 🔐");
 
             document
                 .getElementById("adminDashboard")
-                .scrollIntoView({
-                    behavior:"smooth"
-                });
+                .scrollIntoView({ behavior:"smooth" });
 
         } catch(error) {
 
-            console.error(error);
+            console.error("Admin login error:", error);
+
+            if (auth.currentUser && !isAdmin) {
+                try { await auth.signOut(); } catch (_) {}
+            }
 
             showToast(
                 "فشل تسجيل الدخول: " +
+                getAuthError(error)
+            );
+
+        }
+
+    }
+
+    function toggleAdminPasswordVisibility() {
+
+        const input = document.getElementById("adminPasswordInput");
+        const button = document.getElementById("toggleAdminPassword");
+
+        if (!input || !button) return;
+
+        const visible = input.type === "text";
+        input.type = visible ? "password" : "text";
+        button.textContent = visible ? "👁️" : "🙈";
+        button.setAttribute(
+            "aria-label",
+            visible ? "إظهار كلمة المرور" : "إخفاء كلمة المرور"
+        );
+
+    }
+
+    async function forgotAdminPassword() {
+
+        const emailInput = document.getElementById("adminEmailInput");
+        const email = emailInput.value.trim().toLowerCase();
+
+        if (!email) {
+            emailInput.focus();
+            showToast("اكتب بريد حساب الإدارة أولاً 📧");
+            return;
+        }
+
+        if (!emailInput.checkValidity()) {
+            emailInput.focus();
+            showToast("أدخل بريدًا إلكترونيًا صحيحًا");
+            return;
+        }
+
+        try {
+
+            await auth.sendPasswordResetEmail(email);
+
+            showToast("تم إرسال رابط تغيير كلمة المرور إلى بريدك 📧");
+
+        } catch(error) {
+
+            console.error("Password reset error:", error);
+
+            showToast(
+                "تعذر إرسال رابط إعادة التعيين: " +
                 getAuthError(error)
             );
 
@@ -2487,19 +2579,60 @@
 
     function getAuthError(error) {
 
+        const code = error && error.code ? error.code : "";
+
+        if (code === "auth/invalid-api-key") {
+            return "مفتاح Firebase API غير صحيح في الموقع";
+        }
+
         if (
-            error.code === "auth/invalid-credential" ||
-            error.code === "auth/wrong-password" ||
-            error.code === "auth/user-not-found"
+            code === "auth/invalid-credential" ||
+            code === "auth/wrong-password" ||
+            code === "auth/user-not-found" ||
+            code === "auth/invalid-login-credentials"
         ) {
             return "البريد أو كلمة المرور غير صحيحة";
         }
 
-        if (error.code === "auth/too-many-requests") {
-            return "محاولات كثيرة، حاول لاحقاً";
+        if (code === "auth/invalid-email") {
+            return "البريد الإلكتروني غير صحيح";
         }
 
-        return error.message;
+        if (code === "auth/too-many-requests") {
+            return "تم تجاوز عدد المحاولات. حاول بعد قليل";
+        }
+
+        if (code === "auth/user-disabled") {
+            return "هذا الحساب معطل في Firebase";
+        }
+
+        if (code === "auth/network-request-failed") {
+            return "تعذر الاتصال بـ Firebase. تحقق من الإنترنت";
+        }
+
+        if (code === "auth/operation-not-allowed") {
+            return "تسجيل الدخول بالبريد وكلمة المرور غير مفعل في Firebase";
+        }
+
+        if (code === "auth/missing-email") {
+            return "اكتب البريد الإلكتروني أولاً";
+        }
+
+        if (code === "auth/weak-password") {
+            return "كلمة المرور ضعيفة";
+        }
+
+        if (code === "auth/unauthorized-continue-uri") {
+            return "نطاق الموقع غير مصرح به في Firebase";
+        }
+
+        if (code === "permission-denied" || code === "firestore/permission-denied") {
+            return "Firebase يمنع قراءة بيانات المسؤولين. تحقق من قواعد Firestore";
+        }
+
+        return error && error.message
+            ? error.message
+            : "حدث خطأ غير معروف";
 
     }
 
