@@ -889,6 +889,7 @@
                 font-size: .72rem;
             }
 
+            /* شبكة ثابتة بعمودين على جميع الهواتف */
             .products-grid {
                 grid-template-columns: repeat(2,minmax(0,1fr));
                 gap: 10px;
@@ -920,6 +921,16 @@
                 padding: 9px 5px;
             }
 
+            /* زر تحميل المزيد أوضح وأسهل للمس */
+            #loadMoreBtn {
+                min-width: 190px;
+                min-height: 48px;
+                padding: 12px 24px;
+                font-size: .95rem;
+                font-weight: 800;
+                border-radius: 12px;
+            }
+
             .stats-grid {
                 grid-template-columns: repeat(2,1fr);
             }
@@ -930,12 +941,42 @@
         }
 
         @media(max-width:380px) {
+            /* يبقى عمودان حتى في الشاشات الصغيرة جدًا */
             .products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2,minmax(0,1fr));
+                gap: 8px;
+            }
+
+            .product-card {
+                padding: 6px;
             }
 
             .product-image {
-                height: 210px;
+                height: 135px;
+            }
+
+            .product-title {
+                font-size: .74rem;
+            }
+
+            .current-price {
+                font-size: .82rem;
+            }
+
+            .old-price {
+                font-size: .6rem;
+            }
+
+            .add-btn {
+                font-size: .68rem;
+                padding: 8px 4px;
+            }
+
+            #loadMoreBtn {
+                min-width: 175px;
+                min-height: 48px;
+                padding: 12px 20px;
+                font-size: .9rem;
             }
         }
     </style>
